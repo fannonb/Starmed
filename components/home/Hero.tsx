@@ -9,17 +9,18 @@ const slides = [
   {
     src: '/hero-slide-1.jpg',
     alt: 'A StarMed clinician explaining care options to a patient',
-    position: 'object-[70%_center]',
+    // Mobile: push subject right so copy sits on calmer left crop
+    position: 'object-[82%_center] sm:object-[70%_center]',
   },
   {
     src: '/hero-slide-2.jpg',
     alt: 'A StarMed doctor listening closely during a primary care visit',
-    position: 'object-[68%_center]',
+    position: 'object-[80%_center] sm:object-[68%_center]',
   },
   {
     src: '/hero-slide-3.jpg',
     alt: 'A StarMed clinician sharing a warm conversation with a patient',
-    position: 'object-[60%_center]',
+    position: 'object-[78%_center] sm:object-[60%_center]',
   },
 ] as const
 
@@ -66,24 +67,41 @@ export default function Hero() {
         )
       })}
 
+      {/* Mobile: full-bleed vertical navy scrim — copy sits in the dark band */}
       <div
-        className="pointer-events-none absolute inset-0 z-[2]"
+        className="pointer-events-none absolute inset-0 z-[2] sm:hidden"
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(8,16,32,0.72) 0%, rgba(8,16,32,0.78) 38%, rgba(8,16,32,0.88) 68%, rgba(8,16,32,0.94) 100%)',
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 z-[2] sm:hidden"
+        style={{
+          background:
+            'radial-gradient(ellipse 120% 70% at 50% 0%, rgba(34,40,99,0.35), transparent 60%)',
+        }}
+      />
+
+      {/* Desktop / tablet: left→right wash keeps the subject bright on the right */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[2] hidden sm:block"
         style={{
           background:
             'linear-gradient(90deg, rgba(8,16,32,0.90) 0%, rgba(8,16,32,0.78) 28%, rgba(8,16,32,0.38) 52%, rgba(8,16,32,0.08) 72%, transparent 100%)',
         }}
       />
-      <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-[#081020]/75 via-[#081020]/20 to-transparent lg:from-transparent lg:via-transparent" />
+      <div className="pointer-events-none absolute inset-0 z-[2] hidden bg-gradient-to-t from-[#081020]/40 via-transparent to-transparent sm:block lg:from-transparent" />
       <div
-        className="pointer-events-none absolute inset-0 z-[2]"
+        className="pointer-events-none absolute inset-0 z-[2] hidden sm:block"
         style={{
           background: 'linear-gradient(115deg, rgba(34,40,99,0.28) 0%, transparent 42%)',
         }}
       />
 
-      <div className="relative z-10 mx-auto flex min-h-[30rem] max-w-6xl items-center px-4 py-12 sm:min-h-[32rem] sm:px-6 lg:min-h-[36rem] lg:px-8 lg:py-14">
+      <div className="relative z-10 mx-auto flex min-h-[30rem] max-w-6xl items-end px-4 pb-16 pt-14 sm:min-h-[32rem] sm:items-center sm:px-6 sm:py-12 lg:min-h-[36rem] lg:px-8 lg:py-14">
         <div className="max-w-xl">
-          <h1 className="font-serif text-[2.35rem] font-medium leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[3.35rem]">
+          <h1 className="font-serif text-[2.15rem] font-medium leading-[1.14] tracking-tight text-white sm:text-5xl sm:leading-[1.12] lg:text-[3.35rem]">
             {t.titleLine1}
             <br />
             {t.titleLine2}
@@ -92,14 +110,17 @@ export default function Hero() {
             <span className="italic font-normal">{t.titleLine3Accent}</span>
           </h1>
 
-          <p className="mt-5 max-w-md text-base leading-relaxed text-white/85 sm:text-base">
+          <p className="mt-4 max-w-md text-[0.98rem] leading-relaxed text-white sm:mt-5 sm:hidden">
+            {t.descriptionMobile}
+          </p>
+          <p className="mt-5 hidden max-w-md text-base leading-relaxed text-white/90 sm:block">
             {t.description}
           </p>
 
-          <div className="mt-8">
+          <div className="mt-7 sm:mt-8">
             <LocaleLink
               href="/#pathways"
-              className="inline-flex h-11 items-center gap-2 rounded-lg bg-white px-5 text-sm font-semibold text-[#1A1A1A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="inline-flex h-11 items-center gap-2 rounded-lg bg-white px-5 text-sm font-semibold text-[#1A1A1A] shadow-[0_12px_28px_-14px_rgba(0,0,0,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               {t.cta}
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">

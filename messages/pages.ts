@@ -7,6 +7,8 @@ export const pagesEn = {
     titleLine3Accent: 'you.',
     description:
       'Unhurried primary care, mental wellness, and concierge medicine in San Antonio. Concierge membership or conventional insurance visits — same clinic, same quality.',
+    descriptionMobile:
+      'Unhurried primary care and concierge medicine in San Antonio — membership or insurance visits.',
     cta: 'Get started',
     carouselLabel: 'StarMed care moments',
   },
@@ -265,6 +267,8 @@ export const pagesEs: typeof pagesEn = {
     titleLine3Accent: 'usted.',
     description:
       'Cuidado primario sin prisa, bienestar mental y medicina concierge en San Antonio. Membresía concierge o visitas con seguro — misma clínica, misma calidad.',
+    descriptionMobile:
+      'Cuidado primario sin prisa y medicina concierge en San Antonio — membresía o visitas con seguro.',
     cta: 'Comenzar',
     carouselLabel: 'Momentos de cuidado StarMed',
   },

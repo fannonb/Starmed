@@ -5,34 +5,6 @@ import { useTranslations } from '@/components/layout/LocaleProvider'
 
 const googleReviewsUrl = 'https://share.google/SiY944fka7cAuEggz'
 
-const reviews = [
-  {
-    name: 'Maria G.',
-    quote:
-      'My husband and I are new patients of Dr. Derrick Randolph, and we had an excellent experience. He took time with us, never made us feel rushed, and truly listened to our concerns. The office staff is friendly and efficient.',
-  },
-  {
-    name: 'Arnold S.',
-    quote:
-      'My telehealth call came at the agreed time. Dr. Randolph took his time to explain the results of my recent scan and answered all my questions without making me feel rushed.',
-  },
-  {
-    name: 'Celia R.',
-    quote:
-      'I have complete confidence in the expertise of Dr. Derrick. He is thorough, attentive, and explains every step clearly. I am blessed to have him as my doctor.',
-  },
-  {
-    name: 'Wiley H.',
-    quote:
-      'Dr. Randolph was amazing — highly experienced and never rushed. He gave me an in-depth diagnosis and answered all my questions in detail. I was really impressed.',
-  },
-  {
-    name: 'Matthew G.',
-    quote:
-      'Dr. Derrick Randolph has been very thorough explaining exam and test results and communicating his care plan. His approach gave me the confidence I needed on my recovery journey.',
-  },
-]
-
 function GoogleMark({ className = 'h-7 w-7' }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" aria-hidden="true">
@@ -87,6 +59,7 @@ function Chevron({ dir }: { dir: 'left' | 'right' }) {
 
 export default function PatientTestimonials() {
   const t = useTranslations().pages.testimonials
+  const reviews = t.reviews
   const trackRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
   const [canPrev, setCanPrev] = useState(false)
@@ -171,7 +144,7 @@ export default function PatientTestimonials() {
             >
               <GoogleMark className="h-5 w-5" />
               <span className="text-sm font-semibold tracking-tight text-white">
-                Reviews on Google
+                {t.reviewsOnGoogle}
               </span>
               <span className="hidden h-3.5 w-px bg-white/20 sm:block" />
               <span className="hidden items-center gap-1.5 sm:inline-flex">
@@ -194,7 +167,7 @@ export default function PatientTestimonials() {
                   <p className="text-xl font-bold tracking-tight leading-none">5.0</p>
                   <GoogleStars />
                 </div>
-                <p className="mt-1 text-xs text-[#5A6270]">20 Google reviews</p>
+                <p className="mt-1 text-xs text-[#5A6270]">{t.reviewCount}</p>
               </div>
             </div>
 
@@ -203,7 +176,7 @@ export default function PatientTestimonials() {
                 type="button"
                 onClick={() => scrollByCard(-1)}
                 disabled={!canPrev}
-                aria-label="Previous reviews"
+                aria-label={t.prevLabel}
                 className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/15 transition-colors hover:bg-white/18 disabled:cursor-not-allowed disabled:opacity-35"
               >
                 <Chevron dir="left" />
@@ -212,7 +185,7 @@ export default function PatientTestimonials() {
                 type="button"
                 onClick={() => scrollByCard(1)}
                 disabled={!canNext}
-                aria-label="Next reviews"
+                aria-label={t.nextLabel}
                 className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#222863] transition-colors hover:bg-[#EAF0FF] disabled:cursor-not-allowed disabled:opacity-35"
               >
                 <Chevron dir="right" />
@@ -226,7 +199,7 @@ export default function PatientTestimonials() {
           <div
             ref={trackRef}
             className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            aria-label="Google patient reviews"
+            aria-label={t.carouselLabel}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'ArrowLeft') {
@@ -250,7 +223,7 @@ export default function PatientTestimonials() {
                     <div className="flex items-center gap-2">
                       <GoogleMark className="h-4 w-4" />
                       <span className="text-[11px] font-semibold tracking-[0.08em] uppercase text-white/45">
-                        Google review
+                        {t.reviewBadge}
                       </span>
                     </div>
                     <GoogleStars />
@@ -269,7 +242,7 @@ export default function PatientTestimonials() {
                   </span>
                   <div>
                     <p className="text-sm font-semibold text-white">{review.name}</p>
-                    <p className="text-xs text-white/45">Posted on Google</p>
+                    <p className="text-xs text-white/45">{t.postedOnGoogle}</p>
                   </div>
                 </footer>
               </article>
@@ -288,14 +261,14 @@ export default function PatientTestimonials() {
         </div>
 
         <div className="mt-5 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2" role="tablist" aria-label="Review slides">
+          <div className="flex items-center gap-2" role="tablist" aria-label={t.slidesLabel}>
             {reviews.map((review, i) => (
               <button
                 key={review.name}
                 type="button"
                 role="tab"
                 aria-selected={active === i}
-                aria-label={`Go to review by ${review.name}`}
+                aria-label={t.goToReview.replace('{name}', review.name)}
                 onClick={() => scrollToIndex(i)}
                 className={`h-1.5 rounded-full transition-all ${
                   active === i ? 'w-7 bg-white' : 'w-1.5 bg-white/30 hover:bg-white/50'
@@ -311,7 +284,7 @@ export default function PatientTestimonials() {
             className="inline-flex items-center gap-2.5 self-start rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#222863] transition-colors hover:bg-[#EAF0FF] sm:self-auto"
           >
             <GoogleMark className="h-4 w-4" />
-            Read all on Google
+            {t.googleCta}
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path
                 d="M2.5 7h9M8 3.5 L11.5 7 L8 10.5"

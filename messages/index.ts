@@ -198,6 +198,7 @@ const en = {
     contactUs: 'Contact us',
     spanishWelcome: 'Atención en español disponible',
     dismiss: 'Dismiss',
+    scrollToTop: 'Back to top',
   },
 }
 
@@ -393,6 +394,7 @@ const es: Messages = {
     contactUs: 'Contáctenos',
     spanishWelcome: 'Atención en español disponible',
     dismiss: 'Cerrar',
+    scrollToTop: 'Volver arriba',
   },
 }
 

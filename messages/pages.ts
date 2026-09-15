@@ -54,7 +54,43 @@ export const pagesEn = {
   testimonials: {
     eyebrow: 'Patient voices',
     title: 'What our patients say.',
-    googleCta: 'Read more on Google',
+    googleCta: 'Read all on Google',
+    reviewsOnGoogle: 'Reviews on Google',
+    reviewCount: '20 Google reviews',
+    reviewBadge: 'Google review',
+    postedOnGoogle: 'Posted on Google',
+    prevLabel: 'Previous reviews',
+    nextLabel: 'Next reviews',
+    carouselLabel: 'Google patient reviews',
+    slidesLabel: 'Review slides',
+    goToReview: 'Go to review by {name}',
+    reviews: [
+      {
+        name: 'Maria G.',
+        quote:
+          'My husband and I are new patients of Dr. Derrick Randolph, and we had an excellent experience. He took time with us, never made us feel rushed, and truly listened to our concerns. The office staff is friendly and efficient.',
+      },
+      {
+        name: 'Arnold S.',
+        quote:
+          'My telehealth call came at the agreed time. Dr. Randolph took his time to explain the results of my recent scan and answered all my questions without making me feel rushed.',
+      },
+      {
+        name: 'Celia R.',
+        quote:
+          'I have complete confidence in the expertise of Dr. Derrick. He is thorough, attentive, and explains every step clearly. I am blessed to have him as my doctor.',
+      },
+      {
+        name: 'Wiley H.',
+        quote:
+          'Dr. Randolph was amazing — highly experienced and never rushed. He gave me an in-depth diagnosis and answered all my questions in detail. I was really impressed.',
+      },
+      {
+        name: 'Matthew G.',
+        quote:
+          'Dr. Derrick Randolph has been very thorough explaining exam and test results and communicating his care plan. His approach gave me the confidence I needed on my recovery journey.',
+      },
+    ],
   },
   about: {
     title: 'Care that puts',
@@ -276,7 +312,43 @@ export const pagesEs: typeof pagesEn = {
   testimonials: {
     eyebrow: 'Voces de pacientes',
     title: 'Lo que dicen nuestros pacientes.',
-    googleCta: 'Leer más en Google',
+    googleCta: 'Leer todo en Google',
+    reviewsOnGoogle: 'Reseñas en Google',
+    reviewCount: '20 reseñas en Google',
+    reviewBadge: 'Reseña de Google',
+    postedOnGoogle: 'Publicado en Google',
+    prevLabel: 'Reseñas anteriores',
+    nextLabel: 'Reseñas siguientes',
+    carouselLabel: 'Reseñas de pacientes en Google',
+    slidesLabel: 'Diapositivas de reseñas',
+    goToReview: 'Ir a la reseña de {name}',
+    reviews: [
+      {
+        name: 'Maria G.',
+        quote:
+          'Mi esposo y yo somos pacientes nuevos del Dr. Derrick Randolph, y tuvimos una excelente experiencia. Se tomó tiempo con nosotros, nunca nos hizo sentir apurados y realmente escuchó nuestras inquietudes. El personal de la oficina es amable y eficiente.',
+      },
+      {
+        name: 'Arnold S.',
+        quote:
+          'Mi llamada de telesalud llegó a la hora acordada. El Dr. Randolph se tomó el tiempo para explicar los resultados de mi estudio reciente y respondió todas mis preguntas sin hacer que me sintiera apurado.',
+      },
+      {
+        name: 'Celia R.',
+        quote:
+          'Tengo total confianza en la experiencia del Dr. Derrick. Es minucioso, atento y explica cada paso con claridad. Me siento bendecida de tenerlo como mi médico.',
+      },
+      {
+        name: 'Wiley H.',
+        quote:
+          'El Dr. Randolph fue increíble — muy experimentado y nunca apurado. Me dio un diagnóstico detallado y respondió todas mis preguntas a fondo. Quedé realmente impresionado.',
+      },
+      {
+        name: 'Matthew G.',
+        quote:
+          'El Dr. Derrick Randolph ha sido muy minucioso al explicar los resultados de exámenes y pruebas, y al comunicar su plan de cuidado. Su enfoque me dio la confianza que necesitaba en mi recuperación.',
+      },
+    ],
   },
   about: {
     title: 'Cuidado que lo pone',

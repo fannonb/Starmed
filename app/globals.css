@@ -1,0 +1,294 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@theme inline {
+  --font-sans: var(--font-google-sans), 'Google Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-mackinac), 'P22 Mackinac', Georgia, 'Times New Roman', serif;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.96875rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.3125rem;
+  --leading-relaxed: 1.7;
+}
+
+@layer base {
+  :root {
+    --brand-cyan: #3BA3E8;
+    --brand-navy: #222863;
+    --brand-navy-deep: #1a1f52;
+    --brand-blue: #222863;
+    --brand-indigo: #222863;
+    --brand-purple: #3BA3E8;
+    --brand-ink: #1A1A1A;
+    --brand-muted: #5A6270;
+    --brand-line: #E3E8F0;
+    --brand-ice: #F4F7FB;
+    --brand-white: #FFFFFF;
+
+    --burgundy-dark: #351118;
+    --burgundy: #4E1B24;
+    --burgundy-rich: #5C202C;
+    --burgundy-light: #732A38;
+    --burgundy-subtle: #8E3849;
+    
+    --cream-bg: #FAF7F2;
+    --cream-surface: #F3ECE4;
+    --cream-card: #FFFFFF;
+    --cream-border: #EADBCE;
+    
+    --rose-accent: #C87D75;
+    --rose-soft: #F9EBE8;
+    --rose-subtle: #F2DAD5;
+    --rose-gold: #D89B91;
+    
+    --ink-primary: #231618;
+    --ink-secondary: #5C4B4E;
+    --ink-muted: #8E7B7E;
+    --ink-light: #B8A8AA;
+    
+    --shadow-sm: 0 2px 8px rgba(53, 17, 24, 0.04);
+    --shadow-md: 0 8px 24px rgba(53, 17, 24, 0.06);
+    --shadow-lg: 0 16px 40px rgba(53, 17, 24, 0.09);
+    --shadow-xl: 0 24px 60px rgba(53, 17, 24, 0.12);
+    --shadow-glow: 0 0 35px rgba(200, 125, 117, 0.35);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 7.5rem;
+    font-size: 17px;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--cream-bg);
+    color: var(--ink-primary);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  p {
+    line-height: 1.7;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: var(--font-serif);
+    font-weight: 500;
+  }
+
+  em, .italic {
+    font-style: italic;
+  }
+
+  em {
+    color: var(--brand-cyan);
+  }
+}
+
+/* Custom Utilities for Human-Centered Luxury Design */
+.bg-cream-canvas {
+  background-color: var(--cream-bg);
+}
+
+.bg-burgundy-deep {
+  background: linear-gradient(145deg, #321017 0%, #4E1B24 60%, #5C202C 100%);
+}
+
+.bg-burgundy-card {
+  background: linear-gradient(135deg, rgba(78, 27, 36, 0.95) 0%, rgba(53, 17, 24, 0.98) 100%);
+}
+
+.glow-ambient {
+  position: relative;
+}
+.glow-ambient::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 30%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(200, 125, 117, 0.18) 0%, rgba(78, 27, 36, 0) 70%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Refined buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--burgundy);
+  color: #FFFFFF;
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(78, 27, 36, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.btn-primary:hover {
+  background-color: var(--burgundy-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(78, 27, 36, 0.3);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #FFFFFF;
+  color: var(--burgundy);
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--cream-border);
+  box-shadow: var(--shadow-sm);
+}
+.btn-secondary:hover {
+  background-color: #FAF5F0;
+  border-color: var(--rose-accent);
+  color: var(--burgundy-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-2px);
+}
+
+.btn-pill-rose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--rose-accent);
+  color: #FFFFFF;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(200, 125, 117, 0.3);
+}
+.btn-pill-rose:hover {
+  background-color: #BA6F67;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(200, 125, 117, 0.4);
+}
+
+/* Human-centered soft cards */
+.card-human {
+  background-color: #FFFFFF;
+  border: 1px solid var(--cream-border);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-human:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(200, 125, 117, 0.4);
+}
+
+/* Elegant badge */
+.badge-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  background-color: var(--rose-soft);
+  color: var(--burgundy);
+  border: 1px solid var(--rose-subtle);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badge-kicker-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #F8E8E6;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Custom decorative elements */
+.arch-mask {
+  border-radius: 160px 160px 24px 24px;
+}
+
+.luxury-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--cream-border) 25%, var(--cream-border) 75%, transparent 100%);
+}
+
+.wine-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 25%, rgba(255,255,255,0.15) 75%, transparent 100%);
+}
+
+@keyframes about-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes about-kenburns {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}

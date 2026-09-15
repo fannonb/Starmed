@@ -1,0 +1,6 @@
+export { default as AboutPageContent } from './AboutPageContent'
+export { default as ContactPageContent } from './ContactPageContent'
+export { default as MembershipPageContent } from './MembershipPageContent'
+export { default as AppointmentsPageContent } from './AppointmentsPageContent'
+export { default as FaqPageContent } from './FaqPageContent'
+export { default as ServicesPageContent } from './ServicesPageContent'

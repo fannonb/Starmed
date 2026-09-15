@@ -1,0 +1,6 @@
+export { default as Hero } from './Hero'
+export { default as HealthMatters } from './HealthMatters'
+export { default as ChooseYourPath } from './ChooseYourPath'
+export { default as ComprehensiveCareGrid } from './ComprehensiveCareGrid'
+export { default as CareThatFits } from './CareThatFits'
+export { default as PatientTestimonials } from './PatientTestimonials'

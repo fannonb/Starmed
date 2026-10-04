@@ -15,6 +15,12 @@ function startOfDay(d: Date) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate())
 }
 
+/** The clinic is closed on weekends. */
+function isWeekend(d: Date) {
+  const day = d.getDay()
+  return day === 0 || day === 6
+}
+
 function toISODate(d: Date) {
   const y = d.getFullYear()
   const m = String(d.getMonth() + 1).padStart(2, '0')
@@ -112,7 +118,7 @@ export default function AppointmentDatePicker({
   }
 
   function choose(date: Date) {
-    if (startOfDay(date) < today) return
+    if (startOfDay(date) < today || isWeekend(date)) return
     setValue(toISODate(date))
     setView(new Date(date.getFullYear(), date.getMonth(), 1))
     setOpen(false)
@@ -191,7 +197,7 @@ export default function AppointmentDatePicker({
                 const inMonth = date.getMonth() === view.getMonth()
                 const isToday = sameDay(date, today)
                 const isSelected = selected ? sameDay(date, selected) : false
-                const disabled = startOfDay(date) < today
+                const disabled = startOfDay(date) < today || isWeekend(date)
 
                 return (
                   <button
@@ -238,7 +244,8 @@ export default function AppointmentDatePicker({
             <button
               type="button"
               onClick={() => choose(today)}
-              className="rounded-md px-2 py-1 text-sm font-semibold text-[#3BA3E8] transition-colors hover:bg-white"
+              disabled={isWeekend(today)}
+              className="rounded-md px-2 py-1 text-sm font-semibold text-[#3BA3E8] transition-colors hover:bg-white disabled:cursor-not-allowed disabled:text-[#C5CDD8]"
             >
               {t.today}
             </button>

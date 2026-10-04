@@ -21,7 +21,8 @@ function buildSlots(startHour: number, endHour: number, stepMinutes: number) {
   const slots: string[] = []
   const start = startHour * 60
   const end = endHour * 60
-  for (let mins = start; mins <= end; mins += stepMinutes) {
+  // The last slot starts one step before closing time.
+  for (let mins = start; mins < end; mins += stepMinutes) {
     const h = Math.floor(mins / 60)
     const m = mins % 60
     slots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`)

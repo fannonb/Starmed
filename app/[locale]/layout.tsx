@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { LocaleProvider } from '@/components/layout/LocaleProvider'
+import MobileActionBar from '@/components/layout/MobileActionBar'
 import ScrollToTop from '@/components/layout/ScrollToTop'
 import { isLocale, type Locale } from '@/lib/i18n'
 
@@ -21,6 +22,7 @@ export default async function LocaleLayout({
   return (
     <LocaleProvider locale={locale}>
       {children}
+      <MobileActionBar />
       <ScrollToTop />
     </LocaleProvider>
   )

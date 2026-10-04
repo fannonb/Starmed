@@ -1,155 +1,202 @@
 'use client'
 
 import Image from 'next/image'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { ArrowDown, MapPin, Pause, Play } from 'lucide-react'
 import LocaleLink from '@/components/layout/LocaleLink'
 import { useTranslations } from '@/components/layout/LocaleProvider'
+import GoogleMark from '@/components/ui/GoogleMark'
 
+/** `position` frames the people in each photo: the phone band first, then the tablet/desktop backdrop. */
 const slides = [
-  {
-    src: '/hero-slide-1.jpg',
-    alt: 'A StarMed clinician explaining care options to a patient',
-    // Mobile: push subject right so copy sits on calmer left crop
-    position: 'object-[82%_center] sm:object-[70%_center]',
-  },
-  {
-    src: '/hero-slide-2.jpg',
-    alt: 'A StarMed doctor listening closely during a primary care visit',
-    position: 'object-[80%_center] sm:object-[68%_center]',
-  },
-  {
-    src: '/hero-slide-3.jpg',
-    alt: 'A StarMed clinician sharing a warm conversation with a patient',
-    position: 'object-[78%_center] sm:object-[60%_center]',
-  },
-] as const
+  { src: '/hero-slide-1.jpg', position: 'object-[60%_center] sm:object-[70%_center]' },
+  { src: '/hero-slide-2.jpg', position: 'object-[60%_center] sm:object-[64%_center]' },
+  { src: '/hero-slide-3.jpg', position: 'object-[50%_center] sm:object-[56%_center]' },
+]
 
-const INTERVAL_MS = 4500
+const SLIDE_MS = 7000
+
+function Star() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true">
+      <path
+        fill="#FBBC04"
+        d="M8 1.2l1.76 3.57 3.94.57-2.85 2.78.67 3.92L8 10.2l-3.52 1.84.67-3.92L2.3 5.34l3.94-.57L8 1.2z"
+      />
+    </svg>
+  )
+}
 
 export default function Hero() {
-  const t = useTranslations().pages.hero
+  const messages = useTranslations()
+  const t = messages.pages.hero
   const [active, setActive] = useState(0)
-
-  const goNext = useCallback(() => {
-    setActive((current) => (current + 1) % slides.length)
-  }, [])
+  const [previous, setPrevious] = useState<number | null>(null)
+  const [playing, setPlaying] = useState(true)
+  // Only the first photo loads with the page; the rest mount after hydration
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    const id = window.setInterval(goNext, INTERVAL_MS)
-    return () => window.clearInterval(id)
-  }, [goNext, active])
+    setReady(true)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPlaying(false)
+  }, [])
+
+  const show = (index: number) => {
+    if (index === active) return
+    setPrevious(active)
+    setActive(index)
+  }
+
+  useEffect(() => {
+    if (!playing || !ready) return
+    const timer = window.setTimeout(() => {
+      setPrevious(active)
+      setActive((active + 1) % slides.length)
+    }, SLIDE_MS)
+    return () => window.clearTimeout(timer)
+  }, [active, playing, ready])
 
   return (
-    <section
-      className="relative min-h-[30rem] w-full overflow-hidden sm:min-h-[32rem] lg:min-h-[36rem]"
-      aria-roledescription="carousel"
-      aria-label={t.carouselLabel}
-    >
-      {slides.map((slide, index) => {
-        const isActive = index === active
-        return (
-          <div
-            key={slide.src}
-            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-              isActive ? 'z-[1] opacity-100' : 'z-0 opacity-0'
-            }`}
-            aria-hidden={!isActive}
-          >
-            <Image
-              src={slide.src}
-              alt={slide.alt}
-              fill
-              preload={index === 0}
-              sizes="100vw"
-              className={`object-cover ${slide.position}`}
-            />
+    <section className="relative w-full overflow-hidden bg-[#0B1530]">
+      {/* Phone: photo band above the copy. Tablet/desktop: full-bleed backdrop behind it. */}
+      <div className="relative h-60 sm:absolute sm:inset-0 sm:h-auto">
+        <div aria-hidden="true" className="absolute inset-0">
+          {slides.map((slide, index) => {
+            if (index > 0 && !ready) return null
+            const visible = index === active
+            // Keep the outgoing photo zooming while it fades so it doesn't snap back
+            const zooming = index === active || index === previous
+            return (
+              <div
+                key={slide.src}
+                className={`absolute inset-0 transition-opacity duration-[1400ms] ease-in-out motion-reduce:transition-none ${
+                  visible ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                <Image
+                  src={slide.src}
+                  alt=""
+                  fill
+                  preload={index === 0}
+                  sizes="100vw"
+                  className={`object-cover ${slide.position} ${
+                    zooming ? 'motion-safe:animate-[hero-zoom_9s_ease-out_forwards]' : ''
+                  }`}
+                  style={{ animationPlayState: playing ? 'running' : 'paused' }}
+                />
+              </div>
+            )
+          })}
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#0B1530] sm:hidden" />
+        </div>
+
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
+          <div className="mx-auto flex max-w-6xl justify-end px-4 pb-3 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8">
+            <div
+              role="group"
+              aria-label={t.slidesLabel}
+              className="pointer-events-auto flex items-center gap-2 rounded-full bg-black/25 py-1 pl-1 pr-3 ring-1 ring-white/20 backdrop-blur-sm"
+            >
+              <button
+                type="button"
+                onClick={() => setPlaying((value) => !value)}
+                aria-label={playing ? t.pauseSlides : t.playSlides}
+                className="flex h-7 w-7 items-center justify-center rounded-full text-white transition-colors hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+              >
+                {playing ? (
+                  <Pause className="h-3.5 w-3.5" aria-hidden="true" fill="currentColor" />
+                ) : (
+                  <Play className="h-3.5 w-3.5" aria-hidden="true" fill="currentColor" />
+                )}
+              </button>
+              {slides.map((slide, index) => (
+                <button
+                  key={slide.src}
+                  type="button"
+                  onClick={() => show(index)}
+                  aria-label={t.showSlide.replace('{n}', String(index + 1))}
+                  aria-current={index === active}
+                  className="flex h-7 items-center rounded-full px-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                >
+                  <span
+                    className={`block h-1.5 rounded-full transition-all duration-500 ${
+                      index === active ? 'w-6 bg-white' : 'w-1.5 bg-white/45 hover:bg-white/70'
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
           </div>
-        )
-      })}
+        </div>
+      </div>
 
-      {/* Mobile: full-bleed vertical navy scrim — copy sits in the dark band */}
+      {/* Tablet/desktop: left→right wash keeps the copy readable and the people bright on the right */}
       <div
-        className="pointer-events-none absolute inset-0 z-[2] sm:hidden"
-        style={{
-          background:
-            'linear-gradient(180deg, rgba(8,16,32,0.72) 0%, rgba(8,16,32,0.78) 38%, rgba(8,16,32,0.88) 68%, rgba(8,16,32,0.94) 100%)',
-        }}
-      />
-      <div
-        className="pointer-events-none absolute inset-0 z-[2] sm:hidden"
-        style={{
-          background:
-            'radial-gradient(ellipse 120% 70% at 50% 0%, rgba(34,40,99,0.35), transparent 60%)',
-        }}
-      />
-
-      {/* Desktop / tablet: left→right wash keeps the subject bright on the right */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[2] hidden sm:block"
+        className="pointer-events-none absolute inset-0 hidden sm:block"
         style={{
           background:
             'linear-gradient(90deg, rgba(8,16,32,0.90) 0%, rgba(8,16,32,0.78) 28%, rgba(8,16,32,0.38) 52%, rgba(8,16,32,0.08) 72%, transparent 100%)',
         }}
       />
-      <div className="pointer-events-none absolute inset-0 z-[2] hidden bg-gradient-to-t from-[#081020]/40 via-transparent to-transparent sm:block lg:from-transparent" />
       <div
-        className="pointer-events-none absolute inset-0 z-[2] hidden sm:block"
+        className="pointer-events-none absolute inset-0 hidden sm:block"
         style={{
           background: 'linear-gradient(115deg, rgba(34,40,99,0.28) 0%, transparent 42%)',
         }}
       />
 
-      <div className="relative z-10 mx-auto flex min-h-[30rem] max-w-6xl items-end px-4 pb-16 pt-14 sm:min-h-[32rem] sm:items-center sm:px-6 sm:py-12 lg:min-h-[36rem] lg:px-8 lg:py-14">
-        <div className="max-w-xl">
-          <h1 className="font-serif text-[2.15rem] font-medium leading-[1.14] tracking-tight text-white sm:text-5xl sm:leading-[1.12] lg:text-[3.35rem]">
-            {t.titleLine1}
-            <br />
-            {t.titleLine2}
-            <br />
-            {t.titleLine3Before}{' '}
-            <span className="italic font-normal">{t.titleLine3Accent}</span>
+      <div className="relative mx-auto flex max-w-6xl flex-col px-4 pb-10 pt-4 sm:min-h-[34rem] sm:justify-center sm:px-6 sm:py-14 lg:min-h-[38rem] lg:px-8">
+        <div className="max-w-2xl">
+          {/* Trust first, so it's visible without scrolling */}
+          <ul className="mb-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/90">
+            <li>
+              <a
+                href="#testimonials"
+                aria-label={t.ratingLabel}
+                className="inline-flex items-center gap-2 rounded-full bg-white/10 py-1.5 pl-2 pr-3.5 ring-1 ring-white/20 transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white">
+                  <GoogleMark className="h-3.5 w-3.5" />
+                </span>
+                <span className="flex items-center gap-0.5">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <Star key={i} />
+                  ))}
+                </span>
+                <span className="font-semibold text-white">5.0</span>
+                <span className="text-white/70">· {messages.pages.testimonials.reviewCount}</span>
+              </a>
+            </li>
+            <li className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-[#7EC8F0]" aria-hidden="true" />
+              {t.trustYears}
+            </li>
+          </ul>
+
+          <h1 className="max-w-xl font-serif text-[2rem] font-medium leading-[1.12] tracking-tight text-white sm:text-[2.6rem] lg:text-[2.9rem]">
+            {t.titleBefore} <span className="italic font-normal">{t.titleAccent}</span>
           </h1>
 
-          <p className="mt-4 max-w-md text-[0.98rem] leading-relaxed text-white sm:mt-5 sm:hidden">
-            {t.descriptionMobile}
-          </p>
-          <p className="mt-5 hidden max-w-md text-base leading-relaxed text-white/90 sm:block">
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-white/90 sm:text-lg">
             {t.description}
           </p>
 
-          <div className="mt-7 sm:mt-8">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <LocaleLink
-              href="/#pathways"
-              className="inline-flex h-11 items-center gap-2 rounded-lg bg-white px-5 text-sm font-semibold text-[#1A1A1A] shadow-[0_12px_28px_-14px_rgba(0,0,0,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              href="/appointments"
+              className="inline-flex h-12 items-center justify-center rounded-lg bg-white px-6 text-sm font-semibold text-[#222863] shadow-[0_12px_28px_-14px_rgba(0,0,0,0.55)] transition-colors hover:bg-[#EAF0FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              {t.cta}
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path
-                  d="M3 11 L11 3 M5.5 3 H11 V8.5"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              {t.bookCta}
             </LocaleLink>
+            <a
+              href="#care-finder"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-white/40 px-6 text-sm font-semibold text-white transition-colors hover:border-white/70 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              {t.finderCta}
+              <ArrowDown className="h-4 w-4" aria-hidden="true" />
+            </a>
           </div>
         </div>
-      </div>
-
-      <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 sm:bottom-6 lg:left-auto lg:right-8 lg:translate-x-0">
-        {slides.map((slide, index) => (
-          <button
-            key={slide.src}
-            type="button"
-            aria-label={`Slide ${index + 1}`}
-            aria-current={index === active}
-            onClick={() => setActive(index)}
-            className={`h-2 rounded-full transition-all ${
-              index === active ? 'w-6 bg-white' : 'w-2 bg-white/45 hover:bg-white/70'
-            }`}
-          />
-        ))}
       </div>
     </section>
   )

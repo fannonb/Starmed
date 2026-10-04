@@ -33,7 +33,7 @@ export default function ScrollToTop() {
 
   return (
     <div
-      className={`pointer-events-none fixed bottom-6 right-5 z-50 sm:bottom-8 sm:right-8 ${
+      className={`pointer-events-none fixed bottom-24 right-5 z-50 sm:right-8 lg:bottom-8 ${
         visible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
       } transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none`}
       aria-hidden={!visible}

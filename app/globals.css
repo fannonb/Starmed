@@ -292,3 +292,13 @@
     transform: scale(1);
   }
 }
+
+/* Homepage hero slideshow: slow push-in on the visible slide */
+@keyframes hero-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}

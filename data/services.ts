@@ -57,6 +57,7 @@ export const services: Service[] = [
     detail:
       'Thorough testing designed around your needs — results explained in plain language and tied to a real next step.',
     image: '/service-diagnostics-card.jpg',
+    href: '/services/diagnostic-and-laboratory-services',
     imageAlt: 'Diagnostic and laboratory services at StarMed',
     category: 'diagnostics',
   },

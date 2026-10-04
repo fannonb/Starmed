@@ -1,120 +1,177 @@
 'use client'
 
-import Image from 'next/image'
+import { useState } from 'react'
 import LocaleLink from '@/components/layout/LocaleLink'
-import { useLocale, useTranslations } from '@/components/layout/LocaleProvider'
+import { useTranslations } from '@/components/layout/LocaleProvider'
+import { clinic } from '@/data/clinic'
+import { membershipPlans, type MembershipCadence } from '@/data/membership'
 
-const includeKeys = [
-  { title: '24/7 physician access', titleEs: 'Acceso 24/7 al médico', desc: 'Reach your doctor weekdays, nights, weekends, and holidays.', descEs: 'Comuníquese con su médico entre semana, noches, fines de semana y feriados.' },
-  { title: 'Timely appointments', titleEs: 'Citas oportunas', desc: 'Same-day or next-day visits with time to cover what matters.', descEs: 'Visitas el mismo o siguiente día con tiempo para lo que importa.' },
-  { title: 'Direct doctor contact', titleEs: 'Contacto directo con el médico', desc: 'Phone or email your physician — no call-center runaround.', descEs: 'Llame o escriba a su médico — sin laberintos de call center.' },
-  { title: 'Personalized visits', titleEs: 'Visitas personalizadas', desc: 'Longer appointments for conversation, follow-up, and prevention.', descEs: 'Citas más largas para conversar, dar seguimiento y prevenir.' },
-  { title: 'Hospitalization support', titleEs: 'Apoyo en hospitalización', desc: 'Your physician coordinates with hospital specialists and stays involved.', descEs: 'Su médico coordina con especialistas hospitalarios y permanece involucrado.' },
-  { title: 'Travel medicine', titleEs: 'Medicina de viaje', desc: 'Vaccines, travel advice, and prescription support while you’re away.', descEs: 'Vacunas, consejos de viaje y apoyo con recetas mientras está fuera.' },
-  { title: 'Minor emergency care', titleEs: 'Urgencias menores', desc: 'Care for sprains, stitches, sudden illness, and minor trauma.', descEs: 'Atención para esguinces, puntos, enfermedades repentinas y traumatismos menores.' },
-  { title: 'Wellness & screenings', titleEs: 'Bienestar y detección', desc: 'Prevention plans plus labs that catch issues earlier.', descEs: 'Planes de prevención y laboratorios que detectan problemas a tiempo.' },
-  { title: 'Referrals & prescriptions', titleEs: 'Referencias y recetas', desc: 'Specialist connections, lab orders, medication reviews, and refills.', descEs: 'Conexiones con especialistas, órdenes de laboratorio, revisión de medicamentos y resurtidos.' },
-] as const
+function Check() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+      <path
+        d="M2 5.5 L4.4 8 L9 3"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+const priceFormat = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 0,
+})
 
 export default function CareThatFits() {
-  const { locale } = useLocale()
-  const t = useTranslations().pages.careThatFits
+  const t = useTranslations().pages.twoWays
+  const [cadence, setCadence] = useState<MembershipCadence>(
+    membershipPlans.find((plan) => plan.popular)?.id ?? membershipPlans[0].id,
+  )
+  const plan = membershipPlans.find((p) => p.id === cadence) ?? membershipPlans[0]
 
-  const pathCompare = [
+  const options = [
     {
-      id: 'concierge',
+      id: 'membership',
       recommended: true,
-      title: t.conciergeTitle,
-      desc: t.conciergeDesc,
-      points: t.conciergePoints,
-      cta: t.conciergeCta,
+      title: t.memberTitle,
+      desc: t.memberDesc,
+      points: t.memberPoints,
+      cta: t.memberCta,
       href: '/membership',
     },
     {
-      id: 'conventional',
+      id: 'insurance',
       recommended: false,
-      title: t.conventionalTitle,
-      desc: t.conventionalDesc,
-      points: t.conventionalPoints,
-      cta: t.conventionalCta,
-      href: '/contact',
+      title: t.insuranceTitle,
+      desc: t.insuranceDesc,
+      points: t.insurancePoints,
+      cta: t.insuranceCta,
+      href: '/appointments',
     },
+  ]
+
+  const fit = [
+    { label: t.fitMemberLabel, points: t.fitMemberPoints, accent: true },
+    { label: t.fitInsuranceLabel, points: t.fitInsurancePoints, accent: false },
   ]
 
   return (
     <section
-      className="relative overflow-hidden bg-[#F4F7FB] py-16 sm:py-20 lg:py-28 scroll-mt-32"
+      className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-24 scroll-mt-32"
       id="membership"
     >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <header className="mx-auto max-w-2xl text-center">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <header className="text-center">
           <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
             {t.title}{' '}
             <span className="italic font-normal text-[#3BA3E8]">{t.titleAccent}</span>
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-[#5A6270]">{t.desc}</p>
         </header>
 
-        <div className="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-2 lg:gap-6">
-          {pathCompare.map((path) => (
+        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:mt-12 lg:gap-6">
+          {options.map((option) => (
             <article
-              key={path.id}
-              className={`relative flex flex-col rounded-[1.5rem] p-7 sm:p-8 lg:p-9 ${
-                path.recommended
+              key={option.id}
+              className={`relative flex flex-col rounded-[1.5rem] p-7 sm:p-8 ${
+                option.recommended
                   ? 'bg-[#222863] text-white shadow-[0_28px_60px_-36px_rgba(34,40,99,0.55)]'
-                  : 'bg-white text-[#1A1A1A] ring-1 ring-[#DCE3F0]'
+                  : 'bg-[#F4F7FB] text-[#1A1A1A] ring-1 ring-[#DCE3F0]'
               }`}
             >
-              <div>
-                {path.recommended ? (
-                  <p className="text-[12px] font-semibold tracking-[0.04em] text-[#9BB4FF]">
-                    {t.recommended}
-                  </p>
-                ) : null}
-                <h3
-                  className={`font-serif font-medium tracking-tight ${
-                    path.recommended ? 'mt-2' : 'mt-0'
-                  } text-[1.85rem] leading-tight sm:text-[2.15rem] lg:text-[2.35rem]`}
-                >
-                  {path.title}
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="font-serif text-[1.75rem] font-medium leading-tight tracking-tight sm:text-[2rem]">
+                  {option.title}
                 </h3>
+                {option.recommended ? (
+                  <span className="shrink-0 rounded-full bg-white/10 px-3 py-1 text-[12px] font-semibold text-[#9BB4FF]">
+                    {t.recommended}
+                  </span>
+                ) : null}
               </div>
 
               <p
-                className={`mt-4 text-sm leading-relaxed sm:text-[0.95rem] ${
-                  path.recommended ? 'text-white/70' : 'text-[#5A6270]'
+                className={`mt-3 text-[0.95rem] leading-relaxed ${
+                  option.recommended ? 'text-white/75' : 'text-[#5A6270]'
                 }`}
               >
-                {path.desc}
+                {option.desc}
               </p>
 
+              {option.recommended ? (
+                <div className="mt-6">
+                  <div
+                    role="group"
+                    aria-label={t.billingLabel}
+                    className="grid grid-cols-3 gap-1 rounded-full bg-white/10 p-1"
+                  >
+                    {membershipPlans.map((p) => (
+                      <button
+                        key={p.id}
+                        type="button"
+                        aria-pressed={cadence === p.id}
+                        onClick={() => setCadence(p.id)}
+                        className={`rounded-full px-2 py-2 text-[13px] font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
+                          cadence === p.id ? 'bg-white text-[#222863]' : 'text-white/75 hover:text-white'
+                        }`}
+                      >
+                        {t.cadence[p.id]}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-5 flex min-h-[3rem] flex-wrap items-baseline gap-x-2 gap-y-1" aria-live="polite">
+                    {plan.price !== null ? (
+                      <>
+                        <span className="font-serif text-[2.5rem] font-medium leading-none tracking-tight">
+                          {priceFormat.format(plan.price)}
+                        </span>
+                        <span className="text-sm text-white/70">{t.per[plan.id]}</span>
+                      </>
+                    ) : (
+                      <a
+                        href={clinic.phoneHref}
+                        className="font-serif text-xl font-medium tracking-tight underline decoration-white/30 underline-offset-4 hover:decoration-white"
+                      >
+                        {t.callForPricing}
+                      </a>
+                    )}
+                    {plan.popular ? (
+                      <span className="rounded-full bg-[#3BA3E8] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.08em] text-white">
+                        {t.popular}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-6 flex min-h-[6.25rem] items-end">
+                  <p className="font-serif text-xl font-medium tracking-tight text-[#222863]">
+                    {t.insurancePrice}
+                  </p>
+                </div>
+              )}
+
               <ul
-                className="mt-7 flex-1 space-y-3 border-t pt-6"
+                className="mt-6 flex-1 space-y-3 border-t pt-6"
                 style={{
-                  borderColor: path.recommended ? 'rgba(255,255,255,0.12)' : '#E3E8F0',
+                  borderColor: option.recommended ? 'rgba(255,255,255,0.12)' : '#DCE3F0',
                 }}
               >
-                {path.points.map((point) => (
+                {option.points.map((point) => (
                   <li key={point} className="flex items-start gap-3 text-sm">
                     <span
                       aria-hidden="true"
                       className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-                        path.recommended
+                        option.recommended
                           ? 'bg-white/10 text-[#7EB8F8]'
-                          : 'bg-[#EEF3FF] text-[#222863]'
+                          : 'bg-white text-[#222863]'
                       }`}
                     >
-                      <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-                        <path
-                          d="M2 5.5 L4.4 8 L9 3"
-                          stroke="currentColor"
-                          strokeWidth="1.4"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      <Check />
                     </span>
-                    <span className={path.recommended ? 'text-white/90' : 'text-[#1A1A1A]'}>
+                    <span className={option.recommended ? 'text-white/90' : 'text-[#1A1A1A]'}>
                       {point}
                     </span>
                   </li>
@@ -122,80 +179,56 @@ export default function CareThatFits() {
               </ul>
 
               <LocaleLink
-                href={path.href}
-                className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-colors ${
-                  path.recommended
+                href={option.href}
+                className={`mt-8 inline-flex items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition-colors ${
+                  option.recommended
                     ? 'bg-white text-[#222863] hover:bg-[#EAF0FF]'
                     : 'bg-[#222863] text-white hover:bg-[#1a1f52]'
                 }`}
               >
-                {path.cta}
+                {option.cta}
               </LocaleLink>
             </article>
           ))}
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-[#DCE3F0]">
-          <div className="grid lg:grid-cols-12">
-            <div className="relative min-h-[16rem] lg:col-span-4 lg:min-h-full">
-              <Image
-                src="/consultation-preview.jpg"
-                alt="StarMed concierge physician during a personalized visit"
-                fill
-                sizes="(min-width: 1024px) 33vw, 100vw"
-                className="object-cover object-center"
-              />
-            </div>
+        <p className="mt-8 text-center">
+          <LocaleLink
+            href="/membership#compare"
+            className="text-sm font-semibold text-[#222863] transition-colors hover:text-[#3BA3E8]"
+          >
+            {t.compareLink}
+          </LocaleLink>
+        </p>
 
-            <div className="p-7 sm:p-8 lg:col-span-8 lg:p-10">
-              <p className="text-[12px] font-bold tracking-[0.14em] uppercase text-[#3BA3E8]">
-                {t.includesEyebrow}
-              </p>
-              <h3 className="mt-2 font-serif text-2xl font-medium tracking-tight text-[#1A1A1A] sm:text-[1.85rem]">
-                {t.includesTitle}
-              </h3>
-
-              <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-                {includeKeys.map((item) => (
-                  <li
-                    key={item.title}
-                    className="flex gap-3 rounded-xl border border-[#E3E8F0] bg-[#F4F7FB] px-4 py-3.5 sm:py-4"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#222863] text-white"
-                    >
-                      <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-                        <path
-                          d="M2 5.5 L4.4 8 L9 3"
-                          stroke="currentColor"
-                          strokeWidth="1.4"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                    <div className="min-w-0">
-                      <p className="font-serif text-[0.95rem] font-medium tracking-tight text-[#1A1A1A]">
-                        {locale === 'es' ? item.titleEs : item.title}
-                      </p>
-                      <p className="mt-1 text-sm leading-relaxed text-[#5A6270]">
-                        {locale === 'es' ? item.descEs : item.desc}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-9 flex flex-col gap-3 border-t border-[#E3E8F0] pt-7 sm:flex-row sm:items-center sm:justify-between">
-                <LocaleLink
-                  href="/membership"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#222863] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#2C3278]"
+        <div className="mt-14 border-t border-[#E3E8F0] pt-12 lg:mt-16">
+          <h3 className="text-center font-serif text-2xl font-medium tracking-tight text-[#1A1A1A] sm:text-3xl">
+            {t.fitTitle}{' '}
+            <span className="italic font-normal text-[#3BA3E8]">{t.fitTitleAccent}</span>
+          </h3>
+          <div className="mt-8 grid gap-5 md:grid-cols-2 lg:gap-6">
+            {fit.map((column) => (
+              <div key={column.label} className="rounded-2xl p-6 ring-1 ring-[#DCE3F0] sm:p-7">
+                <p
+                  className={`text-sm font-semibold ${column.accent ? 'text-[#222863]' : 'text-[#5A6270]'}`}
                 >
-                  {t.conciergeCta}
-                </LocaleLink>
+                  {column.label}
+                </p>
+                <ul className="mt-4 space-y-3">
+                  {column.points.map((point) => (
+                    <li key={point} className="flex items-start gap-3 text-sm text-[#1A1A1A]">
+                      <span
+                        aria-hidden="true"
+                        className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${
+                          column.accent ? 'bg-[#222863]' : 'bg-[#3BA3E8]'
+                        }`}
+                      />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ export default function Logo({ className, preload = false }: LogoProps) {
       height={398}
       preload={preload}
       className={className}
-      sizes="200px"
+      sizes="240px"
       style={{ width: 'auto' }}
     />
   )

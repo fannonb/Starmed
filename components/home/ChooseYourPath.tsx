@@ -111,24 +111,12 @@ export default function ChooseYourPath() {
   return (
     <section className="scroll-mt-28 bg-white py-16 sm:py-20 lg:scroll-mt-32 lg:py-24" id="pathways">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-5 lg:grid-cols-12 lg:items-end lg:gap-16">
-          <div className="lg:col-span-6">
-            <p className="text-[12px] font-bold tracking-[0.14em] uppercase text-[#3BA3E8]">
-              {t.home.pathEyebrow}
-            </p>
-            <h2 className="mt-3 font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
-              {t.home.pathTitle}{' '}
-              <span className="italic font-normal text-[#3BA3E8]">{t.home.pathTitleAccent}</span>
-            </h2>
-          </div>
-          <div className="lg:col-span-6">
-            <p className="max-w-md text-base leading-relaxed text-[#5A6270] lg:ml-auto lg:text-right">
-              {t.home.pathDesc}
-            </p>
-          </div>
-        </div>
+        <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
+          {t.home.pathTitle}{' '}
+          <span className="italic font-normal text-[#3BA3E8]">{t.home.pathTitleAccent}</span>
+        </h2>
 
-        <div className="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:grid-rows-2 lg:gap-5">
+        <div className="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:grid-rows-2 lg:gap-5">
           <PathCard {...feature} />
           {side.map((path) => (
             <PathCard key={path.id} {...path} />

@@ -1,5 +1,6 @@
 export { default as BodyCompositionAnalysisContent } from './BodyCompositionAnalysisContent'
 export { default as ChronicConditionManagementContent } from './ChronicConditionManagementContent'
+export { default as DiagnosticLaboratoryContent } from './DiagnosticLaboratoryContent'
 export { default as DirectPrimaryCareBusinessesContent } from './DirectPrimaryCareBusinessesContent'
 export { default as KetamineInfusionTherapyContent } from './KetamineInfusionTherapyContent'
 export { default as MentalWellnessContent } from './MentalWellnessContent'

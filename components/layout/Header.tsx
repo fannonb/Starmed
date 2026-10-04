@@ -1,20 +1,19 @@
 'use client'
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { Phone } from 'lucide-react'
 import Logo from '@/components/layout/Logo'
 import LocaleLink from '@/components/layout/LocaleLink'
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher'
 import SpanishWelcome from '@/components/layout/SpanishWelcome'
 import { useTranslations } from '@/components/layout/LocaleProvider'
-import { serviceCategories, type ServiceCategory } from '@/data/services'
+import { serviceIcons } from '@/components/services/serviceIcons'
 import { useLocalizedServices } from '@/hooks/useLocalizedServices'
+import { stripLocale } from '@/lib/i18n'
 
 const PHONE_DISPLAY = '(726) 242-3011'
 const PHONE_HREF = 'tel:7262423011'
-
-const megaCategories = serviceCategories.filter(
-  (category): category is { id: ServiceCategory; label: string } => category.id !== 'all',
-)
 
 export default function Header() {
   const t = useTranslations()
@@ -22,55 +21,39 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
-  const [mobilePathwaysOpen, setMobilePathwaysOpen] = useState(false)
-  const [mobileCategoryOpen, setMobileCategoryOpen] = useState<ServiceCategory | null>(null)
+  const [scrolled, setScrolled] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
+  const [headerHeight, setHeaderHeight] = useState(0)
+  const path = stripLocale(usePathname() ?? '/')
   const servicesCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const menuId = useId()
   const servicesId = useId()
   const mobileServicesId = useId()
-  const mobilePathwaysId = useId()
 
-  const categoryMeta: Record<
-    ServiceCategory,
-    { label: string; hint: string }
-  > = useMemo(
-    () => ({
-      everyday: { label: t.nav.categoryEveryday, hint: t.nav.hintEveryday },
-      diagnostics: { label: t.nav.categoryDiagnostics, hint: t.nav.hintDiagnostics },
-      mind: { label: t.nav.categoryMind, hint: t.nav.hintMind },
-      employers: { label: t.nav.categoryEmployers, hint: t.nav.hintEmployers },
-    }),
+  const menuServices = useMemo(
+    () =>
+      serviceIcons.flatMap(([id, Icon]) => {
+        const service = localizedServices.find((s) => s.id === id)
+        return service ? [{ service, Icon }] : []
+      }),
+    [localizedServices],
+  )
+
+  // Who the care is for: shown first in the Services menu
+  const careLinks = useMemo(
+    () => [
+      { href: '/care/individuals', label: t.nav.careIndividuals },
+      { href: '/care/mental-health', label: t.nav.careMental },
+      { href: '/care/employers', label: t.nav.categoryEmployers },
+    ],
     [t],
   )
 
-  const servicesByCategory = useMemo(
-    () =>
-      megaCategories.map((category) => ({
-        ...category,
-        label: categoryMeta[category.id].label,
-        hint: categoryMeta[category.id].hint,
-        items: localizedServices.filter((service) => service.category === category.id),
-      })),
-    [categoryMeta, localizedServices],
-  )
-
-  const careLinks = useMemo(
+  // Menu order: Home, About, Services (menu), then these
+  const leadLinks = useMemo(
     () => [
-      {
-        href: '/care/individuals',
-        label: t.nav.careIndividuals,
-        hint: t.nav.hintCareIndividuals,
-      },
-      {
-        href: '/care/mental-health',
-        label: t.nav.careMental,
-        hint: t.nav.hintCareMental,
-      },
-      {
-        href: '/care/employers',
-        label: t.nav.careEmployers,
-        hint: t.nav.hintCareEmployers,
-      },
+      { href: '/', label: t.nav.home },
+      { href: '/about', label: t.nav.about },
     ],
     [t],
   )
@@ -78,7 +61,7 @@ export default function Header() {
   const navLinks = useMemo(
     () => [
       { href: '/membership', label: t.nav.membership },
-      { href: '/frequently-asked-questions', label: t.nav.faq },
+      { href: '/care/employers', label: t.nav.categoryEmployers },
       { href: '/contact', label: t.nav.contact },
     ],
     [t],
@@ -98,6 +81,22 @@ export default function Header() {
     return () => {
       if (servicesCloseTimer.current) clearTimeout(servicesCloseTimer.current)
     }
+  }, [])
+
+  // The phone menu sits right under the header, which can change height (scroll, Spanish banner).
+  useEffect(() => {
+    const header = headerRef.current
+    if (!header) return
+    const observer = new ResizeObserver(() => setHeaderHeight(header.offsetHeight))
+    observer.observe(header)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   useEffect(() => {
@@ -129,15 +128,24 @@ export default function Header() {
   const closeMobile = () => {
     setMobileOpen(false)
     setMobileServicesOpen(false)
-    setMobilePathwaysOpen(false)
-    setMobileCategoryOpen(null)
   }
 
-  const navLinkClass =
-    'rounded-md px-3 py-2 text-base font-semibold text-[#5A6270] hover:text-[#1A1A1A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]'
+  const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
+  const inServices = isCurrent('/services') || isCurrent('/care')
+
+  const navLinkClass = (active: boolean) =>
+    `relative whitespace-nowrap rounded-md px-2 py-2 text-base font-semibold xl:text-[17px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863] after:absolute after:inset-x-2 after:-bottom-0.5 after:h-0.5 after:rounded-full after:transition-colors ${
+      active
+        ? 'text-[#222863] after:bg-[#3BA3E8]'
+        : 'text-[#5A6270] after:bg-transparent hover:text-[#1A1A1A]'
+    }`
+  const mobileLinkClass = (active: boolean) =>
+    `flex min-h-14 items-center border-b border-[#E3E8F0] text-lg font-semibold ${
+      active ? 'text-[#222863] underline decoration-[#3BA3E8] decoration-2 underline-offset-8' : 'text-[#1A1A1A]'
+    }`
 
   return (
-    <header className="sticky top-0 z-50 bg-white">
+    <header ref={headerRef} className="sticky top-0 z-50 bg-white">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-[#222863] focus:px-3 focus:py-2 focus:text-sm focus:text-white"
@@ -156,28 +164,46 @@ export default function Header() {
       <SpanishWelcome />
 
       <div className="relative border-b border-[#E3E8F0] bg-white">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:h-[72px] sm:px-6 lg:h-[84px] lg:px-8">
+        <div
+          className={`mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 transition-[height] duration-200 sm:px-6 lg:px-6 xl:px-8 ${
+            scrolled ? 'h-16 lg:h-[76px]' : 'h-16 sm:h-[76px] lg:h-[92px]'
+          }`}
+        >
           <LocaleLink href="/" className="flex min-w-0 shrink-0 items-center" aria-label="StarMed home">
-            <Logo preload className="h-10 w-auto sm:h-14 lg:h-[68px]" />
+            <Logo
+              preload
+              className={`w-auto transition-[height] duration-200 ${
+                scrolled ? 'h-12 lg:h-14' : 'h-12 sm:h-14 lg:h-[68px]'
+              }`}
+            />
           </LocaleLink>
 
-          <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
-            <LocaleLink href="/" className={navLinkClass}>
-              {t.nav.home}
-            </LocaleLink>
-
-            <LocaleLink href="/about" className={navLinkClass}>
-              {t.nav.about}
-            </LocaleLink>
+          <nav className="hidden items-center gap-0.5 lg:flex xl:gap-1" aria-label="Primary">
+            {leadLinks.map((item) => (
+              <LocaleLink
+                key={item.href}
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                className={navLinkClass(isCurrent(item.href))}
+              >
+                {item.label}
+              </LocaleLink>
+            ))}
 
             <div
               className="relative"
               onMouseEnter={openServices}
               onMouseLeave={scheduleCloseServices}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                  setServicesOpen(false)
+                }
+              }}
             >
               <LocaleLink
                 href="/services"
-                className={`inline-flex items-center gap-1 ${navLinkClass}`}
+                className={`inline-flex items-center gap-1 ${navLinkClass(inServices)}`}
+                aria-current={inServices && path === '/services' ? 'page' : undefined}
                 aria-expanded={servicesOpen}
                 aria-controls={servicesId}
                 onFocus={openServices}
@@ -200,20 +226,86 @@ export default function Header() {
                   />
                 </svg>
               </LocaleLink>
+
+              {servicesOpen ? (
+                // Top padding bridges the gap to the header's bottom edge so hover isn't lost
+                <div id={servicesId} className="absolute left-0 top-full z-30 pt-7">
+                  <div className="w-[40rem] overflow-hidden rounded-2xl bg-white shadow-[0_24px_48px_-20px_rgba(34,40,99,0.35)] ring-1 ring-[#E3E8F0]">
+                    <div className="border-b border-[#E3E8F0] bg-[#F4F7FB] px-5 py-4">
+                      <p className="text-sm text-[#5A6270]">{t.nav.megaPathways}</p>
+                      <ul className="mt-2 flex flex-wrap gap-2">
+                        {careLinks.map((item) => (
+                          <li key={item.href}>
+                            <LocaleLink
+                              href={item.href}
+                              aria-current={isCurrent(item.href) ? 'page' : undefined}
+                              className="inline-flex rounded-full bg-white px-3.5 py-1.5 text-sm font-semibold text-[#222863] ring-1 ring-[#DCE3F0] transition-colors hover:bg-[#222863] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]"
+                              onClick={() => setServicesOpen(false)}
+                            >
+                              {item.label}
+                            </LocaleLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <ul className="grid grid-cols-2 gap-x-2 gap-y-0.5 p-3">
+                      {menuServices.map(({ service, Icon }) => (
+                        <li key={service.id}>
+                          <LocaleLink
+                            href={service.href ?? `/services#${service.id}`}
+                            className="group flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm font-medium leading-snug text-[#1A1A1A] transition-colors hover:bg-[#F4F7FB] hover:text-[#222863] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#222863]"
+                            onClick={() => setServicesOpen(false)}
+                          >
+                            <span
+                              aria-hidden="true"
+                              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#EEF3FF] text-[#222863] transition-colors group-hover:bg-[#222863] group-hover:text-white"
+                            >
+                              <Icon className="h-4 w-4" strokeWidth={1.6} />
+                            </span>
+                            {service.title}
+                          </LocaleLink>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="border-t border-[#E3E8F0] px-5 py-3 text-sm">
+                      <LocaleLink
+                        href="/services"
+                        className="font-semibold text-[#3BA3E8] transition-colors hover:text-[#2B92D4]"
+                        onClick={() => setServicesOpen(false)}
+                      >
+                        {t.nav.viewAll} →
+                      </LocaleLink>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
             </div>
 
             {navLinks.map((item) => (
-              <LocaleLink key={item.href} href={item.href} className={navLinkClass}>
+              <LocaleLink
+                key={item.href}
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                className={navLinkClass(isCurrent(item.href))}
+              >
                 {item.label}
               </LocaleLink>
             ))}
           </nav>
 
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden items-center gap-2 lg:flex xl:gap-3">
             <LanguageSwitcher />
+            <a
+              href={PHONE_HREF}
+              className="hidden h-10 items-center gap-2 whitespace-nowrap rounded-md px-1 text-[15px] xl:inline-flex font-medium text-[#3D4452] hover:text-[#222863] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]"
+              aria-label={`${t.nav.call} ${PHONE_DISPLAY}`}
+            >
+              <Phone className="h-4 w-4 text-[#3BA3E8]" aria-hidden="true" />
+              <span>{PHONE_DISPLAY}</span>
+            </a>
             <LocaleLink
               href="/appointments"
-              className="inline-flex h-10 items-center rounded-md bg-[#222863] px-4 text-sm font-semibold text-white hover:bg-[#1a1f52] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]"
+              className="inline-flex h-10 items-center whitespace-nowrap rounded-lg bg-[#222863] px-5 text-[15px] font-semibold text-white hover:bg-[#1a1f52] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]"
             >
               {t.nav.bookAppointment}
             </LocaleLink>
@@ -221,29 +313,14 @@ export default function Header() {
 
           <div className="flex items-center gap-2 lg:hidden">
             <LanguageSwitcher />
-            <a
-              href={PHONE_HREF}
-              className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#222863] px-3.5 text-sm font-semibold text-white"
-              aria-label={`${t.nav.call} ${PHONE_DISPLAY}`}
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M6.2 4.8c.4-.5 1.1-.6 1.6-.3l2.4 1.2c.5.3.8.8.7 1.4l-.5 2.1c-.1.4 0 .8.3 1.1l2.4 2.4c.3.3.7.4 1.1.3l2.1-.5c.6-.1 1.1.2 1.4.7l1.2 2.4c.3.5.2 1.2-.3 1.6l-1.1 1.1c-.4.4-1 .6-1.6.5C10.2 18.7 5.3 13.8 5.3 8.4c0-.6.2-1.2.5-1.6l.4-.4Z"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              {t.nav.call}
-            </a>
             <button
               type="button"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md text-[#1A1A1A] hover:bg-[#F4F7FB]"
+              className="inline-flex h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-[#222863] ring-1 ring-[#DCE3F0] transition-colors hover:bg-[#F4F7FB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]"
               aria-expanded={mobileOpen}
               aria-controls={menuId}
-              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               onClick={() => setMobileOpen((open) => !open)}
             >
+              <span>{mobileOpen ? t.nav.close : t.nav.menu}</span>
               {mobileOpen ? (
                 <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
                   <path
@@ -269,137 +346,39 @@ export default function Header() {
           </div>
         </div>
 
-        {servicesOpen ? (
-          <div
-            id={servicesId}
-            className="absolute inset-x-0 top-full z-30 hidden border-b border-[#E3E8F0] bg-white shadow-[0_24px_48px_-28px_rgba(34,40,99,0.45)] lg:block"
-            onMouseEnter={openServices}
-            onMouseLeave={scheduleCloseServices}
-          >
-            <div
-              aria-hidden="true"
-              className="h-px w-full bg-gradient-to-r from-transparent via-[#3BA3E8]/50 to-transparent"
-            />
-            <div className="mx-auto max-w-6xl px-4 py-0 sm:px-6 lg:px-8">
-              <div className="grid lg:grid-cols-12">
-                <div className="border-[#E3E8F0] bg-[#F4F7FB] px-5 py-7 sm:px-6 lg:col-span-4 lg:border-r lg:px-7 lg:py-8">
-                  <p className="text-[11px] font-bold tracking-[0.16em] uppercase text-[#3BA3E8]">
-                    {t.nav.megaPathways}
-                  </p>
-                  <p className="mt-2 text-sm leading-snug text-[#5A6270]">{t.nav.megaPathwaysDesc}</p>
-                  <ul className="mt-5 space-y-1">
-                    {careLinks.map((item) => (
-                      <li key={item.href}>
-                        <LocaleLink
-                          href={item.href}
-                          className="group block rounded-lg px-3 py-3 transition-colors hover:bg-white"
-                          onClick={() => setServicesOpen(false)}
-                        >
-                          <span className="block text-sm font-semibold text-[#3BA3E8] transition-colors group-hover:text-[#2B92D4]">
-                            {item.label}
-                          </span>
-                          <span className="mt-0.5 block text-xs leading-snug text-[#5A6270]">
-                            {item.hint}
-                          </span>
-                          <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[#222863]/70 transition-colors group-hover:text-[#222863]">
-                            {t.nav.viewPath}
-                            <span aria-hidden="true">→</span>
-                          </span>
-                        </LocaleLink>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="px-5 py-7 sm:px-6 lg:col-span-8 lg:px-8 lg:py-8">
-                  <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-                    <div>
-                      <p className="text-[11px] font-bold tracking-[0.16em] uppercase text-[#3BA3E8]">
-                        {t.nav.megaServices}
-                      </p>
-                      <p className="mt-2 text-sm leading-snug text-[#5A6270]">
-                        {t.nav.megaServicesDesc}
-                      </p>
-                    </div>
-                    <LocaleLink
-                      href="/services"
-                      className="text-sm font-semibold text-[#3BA3E8] transition-colors hover:text-[#2B92D4]"
-                      onClick={() => setServicesOpen(false)}
-                    >
-                      {t.nav.viewAll} →
-                    </LocaleLink>
-                  </div>
-                  <div className="grid gap-6 sm:grid-cols-2">
-                    {servicesByCategory.map((category) => (
-                      <div key={category.id}>
-                        <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#222863]">
-                          {category.label}
-                        </p>
-                        <p className="mt-1 text-xs leading-snug text-[#5A6270]">{category.hint}</p>
-                        <ul className="mt-2.5 space-y-0.5">
-                          {category.items.map((service) => (
-                            <li key={service.id}>
-                              <LocaleLink
-                                href={service.href ?? `/services#${service.id}`}
-                                className="group -mx-2 flex items-start gap-2 rounded-md px-2 py-1.5 text-sm leading-snug text-[#1A1A1A] transition-colors hover:bg-[#F4F7FB] hover:text-[#222863]"
-                                onClick={() => setServicesOpen(false)}
-                              >
-                                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#3BA3E8]/70 transition-colors group-hover:bg-[#222863]" />
-                                {service.title}
-                              </LocaleLink>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
       </div>
 
       {mobileOpen ? (
         <div
           id={menuId}
-          className="max-h-[calc(100dvh-5.5rem)] overflow-y-auto border-b border-[#E3E8F0] bg-white lg:hidden"
+          className="fixed inset-x-0 bottom-0 z-50 flex flex-col border-t border-[#E3E8F0] bg-white lg:hidden"
+          style={{ top: headerHeight }}
         >
-          <nav className="mx-auto flex max-w-6xl flex-col px-4 py-3 sm:px-6" aria-label="Mobile">
-            <LocaleLink
-              href="/"
-              className="border-b border-[#E3E8F0] py-3.5 text-base font-semibold text-[#1A1A1A]"
-              onClick={closeMobile}
-            >
-              {t.nav.home}
-            </LocaleLink>
-
-            <LocaleLink
-              href="/about"
-              className="border-b border-[#E3E8F0] py-3.5 text-base font-semibold text-[#1A1A1A]"
-              onClick={closeMobile}
-            >
-              {t.nav.about}
-            </LocaleLink>
+          <nav className="mx-auto flex w-full max-w-2xl flex-1 flex-col overflow-y-auto px-4 pb-4 sm:px-6" aria-label="Mobile">
+            {leadLinks.map((item) => (
+              <LocaleLink
+                key={item.href}
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                className={mobileLinkClass(isCurrent(item.href))}
+                onClick={closeMobile}
+              >
+                {item.label}
+              </LocaleLink>
+            ))}
 
             <div className="border-b border-[#E3E8F0]">
               <div className="flex items-center gap-3">
                 <button
                   type="button"
-                  className="flex min-w-0 flex-1 items-center justify-between gap-3 py-3.5 text-left"
+                  className="flex min-h-14 min-w-0 flex-1 items-center justify-between gap-3 text-left"
                   aria-expanded={mobileServicesOpen}
                   aria-controls={mobileServicesId}
-                  onClick={() => {
-                    setMobileServicesOpen((open) => {
-                      if (open) {
-                        setMobileCategoryOpen(null)
-                        setMobilePathwaysOpen(false)
-                      }
-                      return !open
-                    })
-                  }}
+                  onClick={() => setMobileServicesOpen((open) => !open)}
                 >
-                  <span className="text-base font-semibold text-[#1A1A1A]">{t.nav.services}</span>
+                  <span className={`text-lg font-semibold ${inServices ? 'text-[#222863]' : 'text-[#1A1A1A]'}`}>
+                    {t.nav.services}
+                  </span>
                   <svg
                     width="14"
                     height="14"
@@ -418,169 +397,89 @@ export default function Header() {
                     />
                   </svg>
                 </button>
-                {mobileServicesOpen ? (
-                  <LocaleLink
-                    href="/services"
-                    className="shrink-0 py-3.5 text-sm font-semibold text-[#3BA3E8]"
-                    onClick={closeMobile}
-                  >
-                    {t.nav.viewAll}
-                  </LocaleLink>
-                ) : null}
               </div>
 
               {mobileServicesOpen ? (
-                <div id={mobileServicesId} className="pb-1">
-                  <div className="border-t border-[#E3E8F0]">
-                    <button
-                      type="button"
-                      className="flex w-full items-start justify-between gap-3 py-3.5 text-left"
-                      aria-expanded={mobilePathwaysOpen}
-                      aria-controls={mobilePathwaysId}
-                      onClick={() => setMobilePathwaysOpen((open) => !open)}
-                    >
-                      <span>
-                        <span className="block text-sm font-semibold text-[#3BA3E8]">
-                          {t.nav.megaPathways}
-                        </span>
-                        <span className="mt-0.5 block text-xs text-[#5A6270]">
-                          {t.nav.megaPathwaysDesc}
-                        </span>
-                      </span>
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 12 12"
-                        aria-hidden="true"
-                        className={`mt-1 shrink-0 text-[#5A6270] transition-transform ${
-                          mobilePathwaysOpen ? 'rotate-180' : ''
-                        }`}
-                      >
-                        <path
-                          d="M2.5 4.5 L6 8 L9.5 4.5"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.4"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </button>
-                    {mobilePathwaysOpen ? (
-                      <ul id={mobilePathwaysId} className="mb-3 rounded-lg bg-[#F4F7FB] px-3 py-1">
-                        {careLinks.map((item) => (
-                          <li key={item.href}>
-                            <LocaleLink
-                              href={item.href}
-                              className="block py-2.5"
-                              onClick={closeMobile}
-                            >
-                              <span className="block text-sm font-semibold text-[#3BA3E8]">
-                                {item.label}
-                              </span>
-                              <span className="mt-0.5 block text-xs text-[#5A6270]">{item.hint}</span>
-                            </LocaleLink>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </div>
-
-                  {servicesByCategory.map((category) => {
-                    const open = mobileCategoryOpen === category.id
-                    return (
-                      <div key={category.id} className="border-t border-[#E3E8F0]">
-                        <button
-                          type="button"
-                          className="flex w-full items-start justify-between gap-3 py-3.5 text-left"
-                          aria-expanded={open}
-                          onClick={() => setMobileCategoryOpen(open ? null : category.id)}
+                <div id={mobileServicesId} className="pb-3">
+                  <p className="px-1 text-sm text-[#5A6270]">{t.nav.megaPathways}</p>
+                  <ul className="mt-2 mb-3 flex flex-wrap gap-2 px-1">
+                    {careLinks.map((item) => (
+                      <li key={item.href}>
+                        <LocaleLink
+                          href={item.href}
+                          aria-current={isCurrent(item.href) ? 'page' : undefined}
+                          className="inline-flex rounded-full bg-[#F4F7FB] px-3.5 py-2 text-sm font-semibold text-[#222863] ring-1 ring-[#DCE3F0]"
+                          onClick={closeMobile}
                         >
-                          <span>
-                            <span className="block text-sm font-semibold text-[#222863]">
-                              {category.label}
-                            </span>
-                            <span className="mt-0.5 block text-xs text-[#5A6270]">
-                              {category.hint}
-                            </span>
-                          </span>
-                          <svg
-                            width="14"
-                            height="14"
-                            viewBox="0 0 12 12"
+                          {item.label}
+                        </LocaleLink>
+                      </li>
+                    ))}
+                  </ul>
+                  <ul className="grid gap-0.5 rounded-xl bg-[#F4F7FB] p-2 sm:grid-cols-2">
+                    {menuServices.map(({ service, Icon }) => (
+                      <li key={service.id}>
+                        <LocaleLink
+                          href={service.href ?? `/services#${service.id}`}
+                          className="flex min-h-11 items-center gap-3 rounded-lg px-2 py-1.5 text-base font-medium text-[#1A1A1A] active:bg-white"
+                          onClick={closeMobile}
+                        >
+                          <span
                             aria-hidden="true"
-                            className={`mt-1 shrink-0 text-[#5A6270] transition-transform ${
-                              open ? 'rotate-180' : ''
-                            }`}
+                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-[#222863]"
                           >
-                            <path
-                              d="M2.5 4.5 L6 8 L9.5 4.5"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="1.4"
-                              strokeLinecap="round"
-                            />
-                          </svg>
-                        </button>
-                        {open ? (
-                          <ul className="mb-3 rounded-lg bg-[#F4F7FB] px-3 py-1">
-                            {category.items.map((service) => (
-                              <li key={service.id}>
-                                <LocaleLink
-                                  href={service.href ?? `/services#${service.id}`}
-                                  className="block py-2.5 text-sm text-[#1A1A1A]"
-                                  onClick={closeMobile}
-                                >
-                                  {service.title}
-                                </LocaleLink>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : null}
-                      </div>
-                    )
-                  })}
+                            <Icon className="h-4 w-4" strokeWidth={1.6} />
+                          </span>
+                          {service.title}
+                        </LocaleLink>
+                      </li>
+                    ))}
+                  </ul>
+                  <LocaleLink
+                    href="/services"
+                    className="mt-3 inline-flex px-1 text-sm font-semibold text-[#222863]"
+                    onClick={closeMobile}
+                  >
+                    {t.nav.viewAllServices} →
+                  </LocaleLink>
                 </div>
               ) : null}
             </div>
 
-            {navLinks.map((item) => (
+            {[...navLinks, { href: '/frequently-asked-questions', label: t.nav.faq }].map((item) => (
               <LocaleLink
                 key={item.href}
                 href={item.href}
-                className="border-b border-[#E3E8F0] py-3.5 text-base font-semibold text-[#1A1A1A]"
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                className={mobileLinkClass(isCurrent(item.href))}
                 onClick={closeMobile}
               >
                 {item.label}
               </LocaleLink>
             ))}
 
-            <div className="mt-4 rounded-xl bg-[#F4F7FB] px-4 py-4 text-sm text-[#5A6270]">
-              <p className="font-semibold text-[#222863]">{t.nav.clinicHours}</p>
-              <p className="mt-1">{t.nav.hoursValue}</p>
-              <LocaleLink
-                href="/contact"
-                className="mt-3 inline-flex font-semibold text-[#222863]"
-                onClick={closeMobile}
-              >
-                {t.nav.viewLocations}
-              </LocaleLink>
-            </div>
-
-            <div className="mt-4 flex items-center justify-between gap-3 border-t border-[#E3E8F0] pt-4">
-              <p className="text-xs font-semibold tracking-wide text-[#5A6270] uppercase">
-                {t.nav.language}
-              </p>
-              <LanguageSwitcher size="md" />
-            </div>
-
-            <LocaleLink
-              href="/appointments"
-              className="mt-3 mb-2 inline-flex h-11 items-center justify-center rounded-md bg-[#222863] text-sm font-semibold text-white hover:bg-[#1a1f52]"
-              onClick={closeMobile}
-            >
-              {t.nav.bookAppointment}
-            </LocaleLink>
           </nav>
+
+          <div className="border-t border-[#E3E8F0] bg-white px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6">
+            <div className="mx-auto max-w-2xl">
+              <div className="grid grid-cols-2 gap-2.5">
+                <a
+                  href={PHONE_HREF}
+                  className="inline-flex h-10 items-center justify-center gap-1.5 rounded-lg bg-white text-sm font-semibold text-[#222863] ring-1 ring-[#DCE3F0]"
+                >
+                  <Phone className="h-4 w-4 text-[#3BA3E8]" aria-hidden="true" />
+                  {t.nav.call}
+                </a>
+                <LocaleLink
+                  href="/appointments"
+                  className="inline-flex h-10 items-center justify-center rounded-lg bg-[#222863] text-sm font-semibold text-white hover:bg-[#1a1f52]"
+                  onClick={closeMobile}
+                >
+                  {t.nav.bookAppointment}
+                </LocaleLink>
+              </div>
+            </div>
+          </div>
         </div>
       ) : null}
     </header>

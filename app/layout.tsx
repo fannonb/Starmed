@@ -80,7 +80,11 @@ export default async function RootLayout({
   const lang = raw && isLocale(raw) ? raw : defaultLocale
 
   return (
-    <html lang={lang} className={`${googleSans.variable} ${mackinac.variable}`}>
+    <html
+      lang={lang}
+      className={`${googleSans.variable} ${mackinac.variable}`}
+      suppressHydrationWarning
+    >
       <body className="antialiased font-sans bg-[#FAF7F2] text-[#251719]">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

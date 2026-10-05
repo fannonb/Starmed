@@ -12,7 +12,6 @@ import { serviceIcons } from '@/components/services/serviceIcons'
 import { useLocalizedServices } from '@/hooks/useLocalizedServices'
 import { stripLocale } from '@/lib/i18n'
 
-const PHONE_DISPLAY = '(726) 242-3011'
 const PHONE_HREF = 'tel:7262423011'
 
 export default function Header() {
@@ -295,14 +294,6 @@ export default function Header() {
 
           <div className="hidden items-center gap-2 lg:flex xl:gap-3">
             <LanguageSwitcher />
-            <a
-              href={PHONE_HREF}
-              className="hidden h-10 items-center gap-2 whitespace-nowrap rounded-md px-1 text-[15px] xl:inline-flex font-medium text-[#3D4452] hover:text-[#222863] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]"
-              aria-label={`${t.nav.call} ${PHONE_DISPLAY}`}
-            >
-              <Phone className="h-4 w-4 text-[#3BA3E8]" aria-hidden="true" />
-              <span>{PHONE_DISPLAY}</span>
-            </a>
             <LocaleLink
               href="/appointments"
               className="inline-flex h-10 items-center whitespace-nowrap rounded-lg bg-[#222863] px-5 text-[15px] font-semibold text-white hover:bg-[#1a1f52] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]"

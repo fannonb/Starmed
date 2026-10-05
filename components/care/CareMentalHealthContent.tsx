@@ -41,7 +41,7 @@ export default function CareMentalHealthContent() {
                     {index + 1}
                   </span>
                   <div>
-                    <h3 className="text-base font-semibold text-[#222863]">{step.title}</h3>
+                    <h3 className="font-sans text-lg font-bold leading-snug tracking-tight text-[#222863]">{step.title}</h3>
                     <p className="mt-1 text-base leading-relaxed text-[#3D4452]">{step.desc}</p>
                   </div>
                 </li>

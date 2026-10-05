@@ -54,7 +54,7 @@ export default function WeightLossManagementContent() {
             <ul className="mt-6 list-none divide-y divide-[#DCE3F0] p-0">
               {planParts.map((item) => (
                 <li key={item.title} className="py-4">
-                  <h3 className="text-base font-semibold text-[#222863]">
+                  <h3 className="font-sans text-lg font-bold leading-snug tracking-tight text-[#222863]">
                     {item.href ? (
                       <LocaleLink
                         href={item.href}

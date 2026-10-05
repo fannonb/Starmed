@@ -66,7 +66,7 @@ export default function OsteopathicManipulativeTreatmentContent() {
             <ul className="mt-6 list-none divide-y divide-[#DCE3F0] p-0">
               {techniques.map((item) => (
                 <li key={item.title} className="py-4">
-                  <h3 className="text-base font-semibold text-[#222863]">{item.title}</h3>
+                  <h3 className="font-sans text-lg font-bold leading-snug tracking-tight text-[#222863]">{item.title}</h3>
                   <p className="mt-1 text-base leading-relaxed text-[#3D4452]">{item.desc}</p>
                 </li>
               ))}

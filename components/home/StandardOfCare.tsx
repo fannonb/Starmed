@@ -25,7 +25,7 @@ export default function StandardOfCare() {
               <p className="font-serif text-2xl font-medium leading-tight tracking-tight text-[#222863] lg:min-h-[2.5em]">
                 {item.stat}
               </p>
-              <h3 className="mt-4 text-sm font-semibold text-[#1A1A1A]">{item.title}</h3>
+              <h3 className="mt-4 font-sans text-base font-bold leading-snug tracking-tight text-[#1A1A1A]">{item.title}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-[#5A6270]">{item.desc}</p>
             </li>
           ))}

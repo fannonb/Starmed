@@ -1,10 +1,9 @@
 'use client'
 
-import { useState } from 'react'
 import LocaleLink from '@/components/layout/LocaleLink'
 import { useTranslations } from '@/components/layout/LocaleProvider'
 import { clinic } from '@/data/clinic'
-import { membershipPlans, type MembershipCadence } from '@/data/membership'
+import { membershipPlans } from '@/data/membership'
 
 function Check() {
   return (
@@ -28,10 +27,7 @@ const priceFormat = new Intl.NumberFormat('en-US', {
 
 export default function CareThatFits() {
   const t = useTranslations().pages.twoWays
-  const [cadence, setCadence] = useState<MembershipCadence>(
-    membershipPlans.find((plan) => plan.popular)?.id ?? membershipPlans[0].id,
-  )
-  const plan = membershipPlans.find((p) => p.id === cadence) ?? membershipPlans[0]
+  const plan = membershipPlans.find((p) => p.popular) ?? membershipPlans[0]
 
   const options = [
     {
@@ -102,51 +98,25 @@ export default function CareThatFits() {
               </p>
 
               {option.recommended ? (
-                <div className="mt-6">
-                  <div
-                    role="group"
-                    aria-label={t.billingLabel}
-                    className="grid grid-cols-3 gap-1 rounded-full bg-white/10 p-1"
-                  >
-                    {membershipPlans.map((p) => (
-                      <button
-                        key={p.id}
-                        type="button"
-                        aria-pressed={cadence === p.id}
-                        onClick={() => setCadence(p.id)}
-                        className={`rounded-full px-2 py-2 text-[13px] font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
-                          cadence === p.id ? 'bg-white text-[#222863]' : 'text-white/75 hover:text-white'
-                        }`}
-                      >
-                        {t.cadence[p.id]}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="mt-5 flex min-h-[3rem] flex-wrap items-baseline gap-x-2 gap-y-1" aria-live="polite">
-                    {plan.price !== null ? (
-                      <>
-                        <span className="font-serif text-[2.5rem] font-medium leading-none tracking-tight">
-                          {priceFormat.format(plan.price)}
-                        </span>
-                        <span className="text-sm text-white/70">{t.per[plan.id]}</span>
-                      </>
-                    ) : (
-                      <a
-                        href={clinic.phoneHref}
-                        className="font-serif text-xl font-medium tracking-tight underline decoration-white/30 underline-offset-4 hover:decoration-white"
-                      >
-                        {t.callForPricing}
-                      </a>
-                    )}
-                    {plan.popular ? (
-                      <span className="rounded-full bg-[#3BA3E8] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.08em] text-white">
-                        {t.popular}
+                <div className="mt-6 flex min-h-[3rem] flex-wrap items-baseline gap-x-2 gap-y-1">
+                  {plan.price !== null ? (
+                    <>
+                      <span className="font-serif text-[2.5rem] font-medium leading-none tracking-tight">
+                        {priceFormat.format(plan.price)}
                       </span>
-                    ) : null}
-                  </div>
+                      <span className="text-sm text-white/70">{t.per[plan.id]}</span>
+                    </>
+                  ) : (
+                    <a
+                      href={clinic.phoneHref}
+                      className="font-serif text-xl font-medium tracking-tight underline decoration-white/30 underline-offset-4 hover:decoration-white"
+                    >
+                      {t.callForPricing}
+                    </a>
+                  )}
                 </div>
               ) : (
-                <div className="mt-6 flex min-h-[6.25rem] items-end">
+                <div className="mt-6 flex min-h-[3rem] items-end">
                   <p className="font-serif text-xl font-medium tracking-tight text-[#222863]">
                     {t.insurancePrice}
                   </p>

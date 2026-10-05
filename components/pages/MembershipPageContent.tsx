@@ -2,12 +2,25 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
+import {
+  BriefcaseMedical,
+  CalendarCheck,
+  Clock,
+  Hospital,
+  PhoneCall,
+  Pill,
+  Plane,
+  Stethoscope,
+} from 'lucide-react'
 import LocaleLink from '@/components/layout/LocaleLink'
 import { useTranslations } from '@/components/layout/LocaleProvider'
 import { clinic } from '@/data/clinic'
 import { membershipPlans } from '@/data/membership'
 
-const priceFormat = new Intl.NumberFormat('en-US', {
+/** One icon per "What's included" item, in the same order as `included` in messages/pages.ts (both locales). */
+const includedIcons = [PhoneCall, CalendarCheck, Clock, BriefcaseMedical, Stethoscope, Pill, Hospital, Plane]
+
+const priceFormat =new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
   maximumFractionDigits: 0,
@@ -59,12 +72,31 @@ export default function MembershipPageContent() {
             {t.includedTitle}
           </h2>
           <ul className="mt-10 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-            {t.included.map((item) => (
-              <li key={item.title} className="rounded-2xl bg-[#F4F7FB] px-6 py-6">
-                <h3 className="text-base font-semibold text-[#222863]">{item.title}</h3>
-                <p className="mt-1.5 text-base leading-relaxed text-[#3D4452]">{item.desc}</p>
-              </li>
-            ))}
+            {t.included.map((item, i) => {
+              const Icon = includedIcons[i] ?? Stethoscope
+              return (
+                <li
+                  key={item.title}
+                  className="group relative overflow-hidden rounded-2xl bg-white p-6 ring-1 ring-[#E3E8F0] shadow-[0_1px_2px_rgba(16,24,40,0.04)] transition duration-300 hover:-translate-y-1 hover:ring-[#C9D6EE] hover:shadow-[0_24px_48px_-28px_rgba(34,40,99,0.45)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                >
+                  {/* Accent bar that grows on hover */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-[#222863] to-[#3BA3E8] transition-transform duration-300 group-hover:scale-x-100"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#222863] to-[#3BA3E8] text-white shadow-[0_12px_24px_-12px_rgba(34,40,99,0.7)]"
+                  >
+                    <Icon className="h-[22px] w-[22px]" strokeWidth={1.9} />
+                  </span>
+                  <h3 className="relative mt-5 font-sans text-lg font-bold leading-snug tracking-tight text-[#222863]">
+                    {item.title}
+                  </h3>
+                  <p className="relative mt-1.5 text-base leading-relaxed text-[#3D4452]">{item.desc}</p>
+                </li>
+              )
+            })}
           </ul>
         </div>
       </section>
@@ -182,7 +214,7 @@ export default function MembershipPageContent() {
           <div className="mt-8 grid gap-5 md:grid-cols-2 lg:gap-6">
             {fit.map((column) => (
               <div key={column.label} className="rounded-2xl bg-[#F4F7FB] px-6 py-7 sm:px-7">
-                <h3 className="text-base font-semibold text-[#222863]">{column.label}</h3>
+                <h3 className="font-sans text-lg font-bold leading-snug tracking-tight text-[#222863]">{column.label}</h3>
                 <ul className="mt-4 list-disc space-y-2 pl-5 text-base text-[#3D4452] marker:text-[#3BA3E8]">
                   {column.points.map((point) => (
                     <li key={point}>{point}</li>

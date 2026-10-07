@@ -37,7 +37,18 @@ export default function CareThatFits() {
       desc: t.memberDesc,
       points: t.memberPoints,
       cta: t.memberCta,
+      price: null,
       href: '/membership',
+    },
+    {
+      id: 'self-pay',
+      recommended: false,
+      title: t.selfPayTitle,
+      desc: t.selfPayDesc,
+      points: t.selfPayPoints,
+      cta: t.selfPayCta,
+      price: t.selfPayPrice,
+      href: '/appointments',
     },
     {
       id: 'insurance',
@@ -46,12 +57,14 @@ export default function CareThatFits() {
       desc: t.insuranceDesc,
       points: t.insurancePoints,
       cta: t.insuranceCta,
+      price: t.insurancePrice,
       href: '/appointments',
     },
   ]
 
   const fit = [
     { label: t.fitMemberLabel, points: t.fitMemberPoints, accent: true },
+    { label: t.fitSelfPayLabel, points: t.fitSelfPayPoints, accent: false },
     { label: t.fitInsuranceLabel, points: t.fitInsurancePoints, accent: false },
   ]
 
@@ -60,7 +73,7 @@ export default function CareThatFits() {
       className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-24 scroll-mt-32"
       id="membership"
     >
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header className="text-center">
           <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
             {t.title}{' '}
@@ -68,7 +81,7 @@ export default function CareThatFits() {
           </h2>
         </header>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:mt-12 lg:gap-6">
+        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:mt-12 lg:grid-cols-3 lg:gap-6">
           {options.map((option) => (
             <article
               key={option.id}
@@ -118,7 +131,7 @@ export default function CareThatFits() {
               ) : (
                 <div className="mt-6 flex min-h-[3rem] items-end">
                   <p className="font-serif text-xl font-medium tracking-tight text-[#222863]">
-                    {t.insurancePrice}
+                    {option.price}
                   </p>
                 </div>
               )}
@@ -176,7 +189,7 @@ export default function CareThatFits() {
             {t.fitTitle}{' '}
             <span className="italic font-normal text-[#3BA3E8]">{t.fitTitleAccent}</span>
           </h3>
-          <div className="mt-8 grid gap-5 md:grid-cols-2 lg:gap-6">
+          <div className="mt-8 grid gap-5 md:grid-cols-3 lg:gap-6">
             {fit.map((column) => (
               <div key={column.label} className="rounded-2xl p-6 ring-1 ring-[#DCE3F0] sm:p-7">
                 <p

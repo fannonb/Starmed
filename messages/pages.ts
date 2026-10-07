@@ -4,7 +4,7 @@ export const pagesEn = {
     titleBefore: 'Primary care in San Antonio that has time for',
     titleAccent: 'you.',
     description:
-      'Same-day sick visits, checkups, ongoing conditions like diabetes, and mental health care. Use your insurance or become a member.',
+      'Same-day sick visits, checkups, ongoing conditions like diabetes, and mental health care. Become a member, pay per visit, or use your insurance.',
     bookCta: 'Book a visit',
     finderCta: 'Find the right care',
     ratingLabel: 'Rated 5.0 out of 5 on Google — read our reviews',
@@ -33,7 +33,7 @@ export const pagesEn = {
     },
   },
   twoWays: {
-    title: 'Two ways to',
+    title: 'Three ways to',
     titleAccent: 'see us.',
     recommended: 'Most access',
     memberTitle: 'Membership',
@@ -45,6 +45,11 @@ export const pagesEn = {
       'Monthly, quarterly, or annual plans',
     ],
     memberCta: 'See membership',
+    selfPayTitle: 'Self-pay visit',
+    selfPayDesc: 'A regular clinic visit you pay for yourself. No insurance or membership needed.',
+    selfPayPoints: ['No insurance needed', 'No membership fee', 'Mon–Fri, 8 AM – 5 PM'],
+    selfPayCta: 'Book a visit',
+    selfPayPrice: 'Pay per visit',
     insuranceTitle: 'Insurance visit',
     insuranceDesc: 'A regular clinic visit, billed to your insurance.',
     insurancePoints: ['Use your insurance', 'No membership fee', 'Mon–Fri, 8 AM – 5 PM'],
@@ -56,7 +61,7 @@ export const pagesEn = {
     per: { monthly: '/ month', quarterly: '/ quarter', annual: '/ year' },
     popular: 'Most popular',
     callForPricing: 'Call for current pricing',
-    fitTitle: 'Is membership',
+    fitTitle: 'Which one is',
     fitTitleAccent: 'right for you?',
     fitMemberLabel: 'Membership is a good fit if…',
     fitMemberPoints: [
@@ -64,6 +69,13 @@ export const pagesEn = {
       'You manage an ongoing condition and want steady follow-up',
       'You’d rather have longer visits than rushed ones',
       'You like predictable, flat-fee costs',
+    ],
+    fitSelfPayLabel: 'A self-pay visit may suit you better if…',
+    fitSelfPayPoints: [
+      'You don’t have insurance, or your plan doesn’t cover the visit',
+      'You only need care now and then',
+      'You’d rather not pay a membership fee',
+      'You have a high deductible and would rather pay directly',
     ],
     fitInsuranceLabel: 'An insurance visit may suit you better if…',
     fitInsurancePoints: [
@@ -103,7 +115,7 @@ export const pagesEn = {
   visitUs: {
     title: 'Come',
     titleAccent: 'see us.',
-    desc: 'Two clinics on I-10 in San Antonio.',
+    desc: 'Our clinic on I-10 in San Antonio.',
     directions: 'Get directions',
     phoneLabel: 'Phone',
     emailLabel: 'Email',
@@ -314,8 +326,8 @@ export const pagesEn = {
     howTitleAccent: 'work.',
     how: [
       {
-        title: 'Two ways to pay',
-        desc: 'Use your insurance, or join as a member for a flat fee.',
+        title: 'Three ways to pay',
+        desc: 'Join as a member for a flat fee, pay per visit, or use your insurance.',
       },
       {
         title: 'Time to talk',
@@ -334,7 +346,7 @@ export const pagesEn = {
     proofTitleAccent: 'San Antonio.',
     statYears: 'Years caring for San Antonio',
     statReviews: 'From 20 Google reviews',
-    statLocations: 'Clinic locations on I-10',
+    statLocations: 'Clinic on I-10',
     statLanguages: 'Care in English or Spanish',
     ctaTitle: 'Ready when you are.',
     ctaDesc: 'Book online or call us — we’ll help you choose membership or an insurance visit.',
@@ -343,7 +355,7 @@ export const pagesEn = {
   },
   servicesPage: {
     title: 'Our services',
-    desc: 'Everyday care, tests, and specialty treatments in San Antonio. Use your insurance or become a member.',
+    desc: 'Everyday care, tests, and specialty treatments in San Antonio. Become a member, pay per visit, or use your insurance.',
     notSure: 'Not sure which one you need? Call us at {phone}.',
     groups: {
       everyday: {
@@ -379,8 +391,8 @@ export const pagesEn = {
     emailLabel: 'Email',
     emailNote: 'We reply within one business day.',
     emergency: 'In an emergency, call 911.',
-    clinicsTitle: 'Our clinics',
-    clinicsDesc: 'Both are open Monday to Friday, 8 AM to 5 PM.',
+    clinicsTitle: 'Our clinic',
+    clinicsDesc: 'Open Monday to Friday, 8 AM to 5 PM.',
     directions: 'Get directions',
     mapTitle: 'Map of StarMed {name}',
     formTitle: 'Send a message',
@@ -448,15 +460,16 @@ export const pagesEn = {
       annual: 'Pay once a year.',
     },
     planCta: 'Get started',
-    compareTitle: 'Membership or insurance visit?',
+    compareTitle: 'Membership, self-pay, or insurance?',
     compareFeature: 'Feature',
     compareMember: 'Membership',
+    compareSelfPay: 'Self-pay visit',
     compareInsurance: 'Insurance visit',
     compareRows: [
-      { label: 'Reaching your doctor', member: 'Any time, 24/7', insurance: 'Clinic hours, Mon–Fri' },
-      { label: 'Getting seen', member: 'Same or next day', insurance: 'Next open appointment' },
-      { label: 'Visit length', member: 'Longer, unhurried', insurance: 'Standard' },
-      { label: 'How you pay', member: 'Flat membership fee', insurance: 'Billed to your insurance' },
+      { label: 'Reaching your doctor', member: 'Any time, 24/7', selfPay: 'Clinic hours, Mon–Fri', insurance: 'Clinic hours, Mon–Fri' },
+      { label: 'Getting seen', member: 'Same or next day', selfPay: 'Next open appointment', insurance: 'Next open appointment' },
+      { label: 'Visit length', member: 'Longer, unhurried', selfPay: 'Standard', insurance: 'Standard' },
+      { label: 'How you pay', member: 'Flat membership fee', selfPay: 'Pay for each visit', insurance: 'Billed to your insurance' },
     ],
     faqTitle: 'Questions',
     faqs: [
@@ -493,12 +506,12 @@ export const pagesEn = {
   appointments: {
     metaTitle: 'Book a Visit | StarMed Clinic San Antonio',
     metaDesc:
-      'Request a visit at StarMed Clinic in San Antonio. Pick a day, time, and location, and we’ll call or email you to confirm.',
+      'Request a visit at StarMed Clinic in San Antonio. Pick a day and time, and we’ll call or email you to confirm.',
     eyebrow: 'Book a visit',
     title: 'Book a visit',
     heroDesc: 'Pick a day and time. We’ll call or email you to confirm.',
     stepNeed: 'What do you need?',
-    stepWhen: 'When and where?',
+    stepWhen: 'When?',
     stepYou: 'Your details',
     visitType: 'Type of visit',
     visitTypes: {
@@ -516,12 +529,6 @@ export const pagesEn = {
     patientOptions: {
       new: 'No, I’m new',
       returning: 'Yes',
-    },
-    location: 'Location',
-    locationOptions: {
-      either: 'Either is fine',
-      'suite-202': 'Suite 202 · 24165 W Interstate 10 Frontage Rd',
-      'suite-1206': 'Suite 1206 · 22211 I-10',
     },
     choose: 'Choose one',
     date: 'Day',
@@ -572,7 +579,7 @@ export const pagesEs: typeof pagesEn = {
     titleBefore: 'Atención primaria en San Antonio con tiempo para',
     titleAccent: 'usted.',
     description:
-      'Visitas por enfermedad el mismo día, chequeos, condiciones continuas como la diabetes y salud mental. Use su seguro o hágase miembro.',
+      'Visitas por enfermedad el mismo día, chequeos, condiciones continuas como la diabetes y salud mental. Hágase miembro, pague por visita o use su seguro.',
     bookCta: 'Reservar cita',
     finderCta: 'Encuentre su atención',
     ratingLabel: 'Calificación de 5.0 de 5 en Google — lea nuestras reseñas',
@@ -601,7 +608,7 @@ export const pagesEs: typeof pagesEn = {
     },
   },
   twoWays: {
-    title: 'Dos formas de',
+    title: 'Tres formas de',
     titleAccent: 'atenderse.',
     recommended: 'Más acceso',
     memberTitle: 'Membresía',
@@ -613,6 +620,11 @@ export const pagesEs: typeof pagesEn = {
       'Planes mensuales, trimestrales o anuales',
     ],
     memberCta: 'Ver membresía',
+    selfPayTitle: 'Visita con pago propio',
+    selfPayDesc: 'Una visita regular a la clínica que usted paga directamente. Sin seguro ni membresía.',
+    selfPayPoints: ['No necesita seguro', 'Sin cuota de membresía', 'Lun–Vie, 8 AM – 5 PM'],
+    selfPayCta: 'Reservar cita',
+    selfPayPrice: 'Pago por visita',
     insuranceTitle: 'Visita con seguro',
     insuranceDesc: 'Una visita regular a la clínica, facturada a su seguro.',
     insurancePoints: ['Use su seguro', 'Sin cuota de membresía', 'Lun–Vie, 8 AM – 5 PM'],
@@ -624,7 +636,7 @@ export const pagesEs: typeof pagesEn = {
     per: { monthly: '/ mes', quarterly: '/ trimestre', annual: '/ año' },
     popular: 'Más elegido',
     callForPricing: 'Llame para conocer los precios',
-    fitTitle: '¿La membresía es',
+    fitTitle: '¿Cuál es',
     fitTitleAccent: 'para usted?',
     fitMemberLabel: 'La membresía le conviene si…',
     fitMemberPoints: [
@@ -632,6 +644,13 @@ export const pagesEs: typeof pagesEn = {
       'Tiene una condición crónica y quiere seguimiento constante',
       'Prefiere visitas más largas en lugar de visitas apuradas',
       'Le gustan los costos fijos y predecibles',
+    ],
+    fitSelfPayLabel: 'Una visita con pago propio puede convenirle más si…',
+    fitSelfPayPoints: [
+      'No tiene seguro, o su plan no cubre la visita',
+      'Solo necesita atención de vez en cuando',
+      'Prefiere no pagar una cuota de membresía',
+      'Tiene un deducible alto y prefiere pagar directamente',
     ],
     fitInsuranceLabel: 'Una visita con seguro puede convenirle más si…',
     fitInsurancePoints: [
@@ -671,7 +690,7 @@ export const pagesEs: typeof pagesEn = {
   visitUs: {
     title: 'Venga a',
     titleAccent: 'vernos.',
-    desc: 'Dos clínicas sobre la I-10 en San Antonio.',
+    desc: 'Nuestra clínica sobre la I-10 en San Antonio.',
     directions: 'Cómo llegar',
     phoneLabel: 'Teléfono',
     emailLabel: 'Correo',
@@ -882,8 +901,8 @@ export const pagesEs: typeof pagesEn = {
     howTitleAccent: 'trabajamos.',
     how: [
       {
-        title: 'Dos formas de pagar',
-        desc: 'Use su seguro o hágase miembro con una cuota fija.',
+        title: 'Tres formas de pagar',
+        desc: 'Hágase miembro con una cuota fija, pague por visita o use su seguro.',
       },
       {
         title: 'Tiempo para conversar',
@@ -902,7 +921,7 @@ export const pagesEs: typeof pagesEn = {
     proofTitleAccent: 'San Antonio.',
     statYears: 'Años atendiendo a San Antonio',
     statReviews: 'En 20 reseñas de Google',
-    statLocations: 'Clínicas sobre la I-10',
+    statLocations: 'Clínica sobre la I-10',
     statLanguages: 'Atención en inglés o español',
     ctaTitle: 'Estamos listos cuando usted lo esté.',
     ctaDesc: 'Reserve en línea o llámenos — le ayudamos a elegir entre membresía o una visita con seguro.',
@@ -911,7 +930,7 @@ export const pagesEs: typeof pagesEn = {
   },
   servicesPage: {
     title: 'Nuestros servicios',
-    desc: 'Atención diaria, pruebas y tratamientos especializados en San Antonio. Use su seguro o hágase miembro.',
+    desc: 'Atención diaria, pruebas y tratamientos especializados en San Antonio. Hágase miembro, pague por visita o use su seguro.',
     notSure: '¿No sabe cuál necesita? Llámenos al {phone}.',
     groups: {
       everyday: {
@@ -1016,15 +1035,16 @@ export const pagesEs: typeof pagesEn = {
       annual: 'Pague una vez al año.',
     },
     planCta: 'Comenzar',
-    compareTitle: '¿Membresía o visita con seguro?',
+    compareTitle: '¿Membresía, pago propio o seguro?',
     compareFeature: 'Característica',
     compareMember: 'Membresía',
+    compareSelfPay: 'Visita con pago propio',
     compareInsurance: 'Visita con seguro',
     compareRows: [
-      { label: 'Contactar a su médico', member: 'A cualquier hora, 24/7', insurance: 'Horario de clínica, lun–vie' },
-      { label: 'Ser atendido', member: 'El mismo día o al siguiente', insurance: 'Próxima cita disponible' },
-      { label: 'Duración de la visita', member: 'Más larga, sin prisa', insurance: 'Estándar' },
-      { label: 'Cómo paga', member: 'Cuota fija de membresía', insurance: 'Facturado a su seguro' },
+      { label: 'Contactar a su médico', member: 'A cualquier hora, 24/7', selfPay: 'Horario de clínica, lun–vie', insurance: 'Horario de clínica, lun–vie' },
+      { label: 'Ser atendido', member: 'El mismo día o al siguiente', selfPay: 'Próxima cita disponible', insurance: 'Próxima cita disponible' },
+      { label: 'Duración de la visita', member: 'Más larga, sin prisa', selfPay: 'Estándar', insurance: 'Estándar' },
+      { label: 'Cómo paga', member: 'Cuota fija de membresía', selfPay: 'Paga cada visita', insurance: 'Facturado a su seguro' },
     ],
     faqTitle: 'Preguntas',
     faqs: [
@@ -1061,12 +1081,12 @@ export const pagesEs: typeof pagesEn = {
   appointments: {
     metaTitle: 'Reservar una visita | StarMed Clinic San Antonio',
     metaDesc:
-      'Solicite una visita en StarMed Clinic en San Antonio. Elija día, hora y ubicación, y le llamaremos o escribiremos para confirmar.',
+      'Solicite una visita en StarMed Clinic en San Antonio. Elija día y hora, y le llamaremos o escribiremos para confirmar.',
     eyebrow: 'Reservar una visita',
     title: 'Reservar una visita',
     heroDesc: 'Elija día y hora. Le llamaremos o escribiremos para confirmar.',
     stepNeed: '¿Qué necesita?',
-    stepWhen: '¿Cuándo y dónde?',
+    stepWhen: '¿Cuándo?',
     stepYou: 'Sus datos',
     visitType: 'Tipo de visita',
     visitTypes: {
@@ -1084,12 +1104,6 @@ export const pagesEs: typeof pagesEn = {
     patientOptions: {
       new: 'No, soy nuevo',
       returning: 'Sí',
-    },
-    location: 'Ubicación',
-    locationOptions: {
-      either: 'Cualquiera está bien',
-      'suite-202': 'Suite 202 · 24165 W Interstate 10 Frontage Rd',
-      'suite-1206': 'Suite 1206 · 22211 I-10',
     },
     choose: 'Elija una opción',
     date: 'Día',

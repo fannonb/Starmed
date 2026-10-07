@@ -34,6 +34,7 @@ export default function MembershipPageContent() {
 
   const fit = [
     { label: plansCopy.fitMemberLabel, points: plansCopy.fitMemberPoints },
+    { label: plansCopy.fitSelfPayLabel, points: plansCopy.fitSelfPayPoints },
     { label: plansCopy.fitInsuranceLabel, points: plansCopy.fitInsurancePoints },
   ]
 
@@ -173,23 +174,26 @@ export default function MembershipPageContent() {
         </div>
       </section>
 
-      {/* Membership or insurance visit? */}
+      {/* Membership, self-pay, or insurance? */}
       <section id="compare" className="scroll-mt-32 bg-white py-14 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-serif text-3xl font-medium tracking-tight text-[#222863] sm:text-4xl">
             {t.compareTitle}
           </h2>
 
-          <table className="mt-10 w-full table-fixed border-collapse overflow-hidden rounded-2xl text-left text-sm ring-1 ring-[#D5DEEA] sm:text-base">
+          <table className="mt-10 w-full table-fixed border-collapse overflow-hidden rounded-2xl text-left text-[13px] ring-1 ring-[#D5DEEA] sm:text-base">
             <thead className="bg-[#F4F7FB] text-[#222863]">
               <tr>
-                <th scope="col" className="w-[34%] px-4 py-4 font-semibold sm:px-6">
+                <th scope="col" className="w-[25%] px-2.5 py-4 font-semibold sm:px-6">
                   <span className="sr-only">{t.compareFeature}</span>
                 </th>
-                <th scope="col" className="border-l border-[#D5DEEA] px-4 py-4 font-semibold sm:px-6">
+                <th scope="col" className="border-l border-[#D5DEEA] px-2.5 py-4 font-semibold sm:px-6">
                   {t.compareMember}
                 </th>
-                <th scope="col" className="border-l border-[#D5DEEA] px-4 py-4 font-semibold sm:px-6">
+                <th scope="col" className="border-l border-[#D5DEEA] px-2.5 py-4 font-semibold sm:px-6">
+                  {t.compareSelfPay}
+                </th>
+                <th scope="col" className="border-l border-[#D5DEEA] px-2.5 py-4 font-semibold sm:px-6">
                   {t.compareInsurance}
                 </th>
               </tr>
@@ -197,13 +201,16 @@ export default function MembershipPageContent() {
             <tbody>
               {t.compareRows.map((row) => (
                 <tr key={row.label} className="border-t border-[#D5DEEA]">
-                  <th scope="row" className="px-4 py-4 font-semibold text-[#222863] sm:px-6">
+                  <th scope="row" className="px-2.5 py-4 font-semibold text-[#222863] sm:px-6">
                     {row.label}
                   </th>
-                  <td className="border-l border-[#D5DEEA] px-4 py-4 text-[#3D4452] sm:px-6">
+                  <td className="border-l border-[#D5DEEA] px-2.5 py-4 text-[#3D4452] sm:px-6">
                     {row.member}
                   </td>
-                  <td className="border-l border-[#D5DEEA] px-4 py-4 text-[#3D4452] sm:px-6">
+                  <td className="border-l border-[#D5DEEA] px-2.5 py-4 text-[#3D4452] sm:px-6">
+                    {row.selfPay}
+                  </td>
+                  <td className="border-l border-[#D5DEEA] px-2.5 py-4 text-[#3D4452] sm:px-6">
                     {row.insurance}
                   </td>
                 </tr>
@@ -211,7 +218,7 @@ export default function MembershipPageContent() {
             </tbody>
           </table>
 
-          <div className="mt-8 grid gap-5 md:grid-cols-2 lg:gap-6">
+          <div className="mt-8 grid gap-5 md:grid-cols-3 lg:gap-6">
             {fit.map((column) => (
               <div key={column.label} className="rounded-2xl bg-[#F4F7FB] px-6 py-7 sm:px-7">
                 <h3 className="font-sans text-lg font-bold leading-snug tracking-tight text-[#222863]">{column.label}</h3>

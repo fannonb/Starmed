@@ -14,7 +14,6 @@ export const visitTypeIds = [
 ] as const
 
 export const patientStatusIds = ['new', 'returning'] as const
-export const locationIds = ['either', 'suite-202', 'suite-1206'] as const
 
 export type VisitTypeId = (typeof visitTypeIds)[number]
 
@@ -34,7 +33,6 @@ export const appointmentLimits = {
 export type AppointmentField =
   | 'visitType'
   | 'patientStatus'
-  | 'location'
   | 'date'
   | 'time'
   | 'name'

@@ -4,7 +4,7 @@ import LocaleLink from '@/components/layout/LocaleLink'
 import { useTranslations } from '@/components/layout/LocaleProvider'
 import { clinic } from '@/data/clinic'
 
-/** Membership vs insurance visit, shared by service detail pages. */
+/** Membership, self-pay, or insurance visit, shared by service detail pages. */
 export default function ServiceWaysToPay() {
   const { pages } = useTranslations()
   const t = pages.twoWays
@@ -16,6 +16,13 @@ export default function ServiceWaysToPay() {
       points: t.memberPoints,
       cta: t.memberCta,
       href: '/membership',
+    },
+    {
+      title: t.selfPayTitle,
+      desc: t.selfPayDesc,
+      points: t.selfPayPoints,
+      cta: t.selfPayCta,
+      href: '/appointments',
     },
     {
       title: t.insuranceTitle,
@@ -33,12 +40,12 @@ export default function ServiceWaysToPay() {
           {pages.common.waysToPay}
         </h2>
 
-        <div className="mt-8 grid gap-0 overflow-hidden border border-[#D5DEEA] lg:grid-cols-2">
+        <div className="mt-8 grid gap-0 overflow-hidden border border-[#D5DEEA] lg:grid-cols-3">
           {options.map((option, index) => (
             <div
               key={option.title}
               className={`flex flex-col bg-white px-6 py-8 sm:px-8 ${
-                index === 0 ? 'border-b border-[#D5DEEA] lg:border-b-0 lg:border-r' : ''
+                index < options.length - 1 ? 'border-b border-[#D5DEEA] lg:border-b-0 lg:border-r' : ''
               }`}
             >
               <h3 className="font-serif text-2xl font-medium tracking-tight text-[#222863]">

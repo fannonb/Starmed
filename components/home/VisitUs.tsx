@@ -19,7 +19,7 @@ export default function VisitUs() {
           <p className="mt-3 text-base text-[#5A6270]">{t.desc}</p>
         </header>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+        <div className="mt-10 grid gap-5 lg:grid-cols-2">
           {clinic.locations.map((location) => (
             <article
               key={location.name}

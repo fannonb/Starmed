@@ -4,7 +4,6 @@ import {
   appointmentLimits,
   clinicHours,
   clinicTimeZone,
-  locationIds,
   maxDaysAhead,
   patientStatusIds,
   visitTypeIds,
@@ -32,9 +31,6 @@ const staffLabels: Record<string, string> = {
   other: 'Something else',
   new: 'New patient',
   returning: 'Returning patient',
-  either: 'Either location',
-  'suite-202': 'Suite 202 — 24165 W Interstate 10 Frontage Rd',
-  'suite-1206': 'Suite 1206 — 22211 I-10',
 }
 
 /** Today's date (YYYY-MM-DD) and minutes past midnight at the clinic. */
@@ -84,7 +80,6 @@ export async function requestAppointment(
   const fields = {
     visitType: clean(formData.get('visitType')),
     patientStatus: clean(formData.get('patientStatus')),
-    location: clean(formData.get('location')),
     date: clean(formData.get('date')),
     time: clean(formData.get('time')),
     name: clean(formData.get('name')),
@@ -107,7 +102,6 @@ export async function requestAppointment(
 
   choice('visitType', visitTypeIds)
   choice('patientStatus', patientStatusIds)
-  choice('location', locationIds)
 
   require('name')
   limit('name')
@@ -153,7 +147,6 @@ export async function requestAppointment(
       '',
       `Visit: ${staffLabels[fields.visitType]}`,
       `Patient: ${staffLabels[fields.patientStatus]}`,
-      `Location: ${staffLabels[fields.location]}`,
       `Preferred date: ${fields.date}`,
       `Preferred time: ${fields.time}`,
       '',

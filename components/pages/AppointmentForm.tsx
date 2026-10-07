@@ -8,7 +8,6 @@ import { clinic } from '@/data/clinic'
 import {
   appointmentLimits,
   clinicHours,
-  locationIds,
   patientStatusIds,
   visitTypeIds,
   type AppointmentField,
@@ -92,15 +91,14 @@ export default function AppointmentForm() {
 
   /** A short list of options as tappable choices (easier than a dropdown for 2–3 options). */
   const choiceGroup = (
-    field: 'patientStatus' | 'location',
+    field: 'patientStatus',
     legend: string,
     ids: readonly string[],
     labels: Record<string, string>,
-    stacked = false,
   ) => (
     <fieldset aria-describedby={describedBy(field)}>
       <legend className={labelClass}>{legend}</legend>
-      <div className={`mt-2 flex gap-2 ${stacked ? 'flex-col' : 'flex-wrap'}`}>
+      <div className="mt-2 flex flex-wrap gap-2">
         {ids.map((id) => (
           <label
             key={id}
@@ -210,7 +208,6 @@ export default function AppointmentForm() {
       </Step>
 
       <Step number={2} title={t.stepWhen}>
-        {choiceGroup('location', t.location, locationIds, t.locationOptions, true)}
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <span className={labelClass}>{t.date}</span>

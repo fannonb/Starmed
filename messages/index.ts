@@ -30,10 +30,10 @@ const en = {
     call: 'Call',
     clinicHours: 'Clinic hours',
     hoursValue: 'Mon–Fri 8:00 AM – 5:00 PM',
-    viewLocations: 'Locations & directions →',
+    viewLocations: 'Location & directions →',
     browseServices: 'Services',
     language: 'Language / Idioma',
-    locationsLabel: 'Suite 202 · Suite 1206',
+    locationsLabel: 'Suite 1206',
     locationsCity: 'San Antonio',
     categoryEmployers: 'For employers',
   },
@@ -63,7 +63,7 @@ const en = {
   contact: {
     metaTitle: 'Contact | StarMed Clinic San Antonio',
     metaDesc:
-      'Contact StarMed Clinic in San Antonio — call, email, or visit our I-10 locations to schedule care or ask about membership and services.',
+      'Contact StarMed Clinic in San Antonio — call, email, or visit our I-10 clinic to schedule care or ask about membership and services.',
   },
   membership: {
     metaTitle: 'Concierge Membership | StarMed Clinic San Antonio',
@@ -95,7 +95,7 @@ const en = {
           },
           {
             q: 'Where are you?',
-            a: 'We have two clinics in San Antonio: 24165 W Interstate 10 Frontage Rd, Suite 202, and 22211 I-10, Suite 1206.',
+            a: 'Our clinic is at 22211 I-10, Suite 1206, San Antonio, TX 78257.',
             href: '/contact',
             linkLabel: 'Get directions',
           },
@@ -246,10 +246,10 @@ const es: Messages = {
     call: 'Llamar',
     clinicHours: 'Horario de la clínica',
     hoursValue: 'Lun–Vie 8:00 AM – 5:00 PM',
-    viewLocations: 'Ubicaciones y cómo llegar →',
+    viewLocations: 'Ubicación y cómo llegar →',
     browseServices: 'Servicios',
     language: 'Language / Idioma',
-    locationsLabel: 'Suite 202 · Suite 1206',
+    locationsLabel: 'Suite 1206',
     locationsCity: 'San Antonio',
     categoryEmployers: 'Para empleadores',
   },
@@ -279,7 +279,7 @@ const es: Messages = {
   contact: {
     metaTitle: 'Contacto | StarMed Clinic San Antonio',
     metaDesc:
-      'Contacte StarMed Clinic en San Antonio — llame, escriba o visite nuestras clínicas en I-10 para programar atención o preguntar por membresía y servicios.',
+      'Contacte StarMed Clinic en San Antonio — llame, escriba o visite nuestra clínica en I-10 para programar atención o preguntar por membresía y servicios.',
   },
   membership: {
     metaTitle: 'Membresía Concierge | StarMed Clinic San Antonio',
@@ -311,7 +311,7 @@ const es: Messages = {
           },
           {
             q: '¿Dónde están?',
-            a: 'Tenemos dos clínicas en San Antonio: 24165 W Interstate 10 Frontage Rd, Suite 202, y 22211 I-10, Suite 1206.',
+            a: 'Nuestra clínica está en 22211 I-10, Suite 1206, San Antonio, TX 78257.',
             href: '/contact',
             linkLabel: 'Cómo llegar',
           },

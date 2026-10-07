@@ -68,7 +68,7 @@ export default function ContactPageContent() {
         </div>
       </section>
 
-      {/* Our clinics */}
+      {/* Our clinic */}
       <section className="bg-[#F4F7FB] py-14 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-serif text-3xl font-medium tracking-tight text-[#222863] sm:text-4xl">
@@ -76,10 +76,10 @@ export default function ContactPageContent() {
           </h2>
           <p className="mt-3 text-lg leading-relaxed text-[#3D4452]">{t.clinicsDesc}</p>
 
-          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+          <div className="mt-8 grid gap-6">
             {clinic.locations.map((location) => (
-              <article key={location.name} className="overflow-hidden rounded-2xl bg-white ring-1 ring-[#DCE3F0]">
-                <div className="relative h-56 sm:h-64">
+              <article key={location.name} className="overflow-hidden rounded-2xl bg-white ring-1 ring-[#DCE3F0] lg:grid lg:grid-cols-2">
+                <div className="relative h-56 sm:h-64 lg:h-auto lg:min-h-72">
                   <iframe
                     title={t.mapTitle.replace('{name}', location.name)}
                     src={location.mapEmbedUrl}
@@ -89,7 +89,7 @@ export default function ContactPageContent() {
                     allowFullScreen
                   />
                 </div>
-                <div className="px-6 py-6 sm:px-7">
+                <div className="px-6 py-6 sm:px-7 lg:flex lg:flex-col lg:justify-center lg:p-10">
                   <h3 className="font-serif text-2xl font-medium tracking-tight text-[#222863]">
                     {location.name}
                   </h3>

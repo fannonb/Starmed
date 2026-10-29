@@ -10,6 +10,7 @@ export const visitTypeIds = [
   'mental',
   'weight',
   'omt',
+  'medspa',
   'other',
 ] as const
 

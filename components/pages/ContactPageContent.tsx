@@ -116,7 +116,7 @@ export default function ContactPageContent() {
       </section>
 
       {/* Send a message */}
-      <section className="bg-white py-14 sm:py-16 lg:py-20">
+      <section className="scroll-mt-28 bg-white py-14 sm:py-16 lg:py-20" id="message">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:px-8">
           <div className="lg:col-span-5">
             <h2 className="font-serif text-3xl font-medium tracking-tight text-[#222863] sm:text-4xl">

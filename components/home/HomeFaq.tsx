@@ -11,7 +11,7 @@ export default function HomeFaq() {
     <section className="bg-white py-16 sm:py-20 lg:py-24 scroll-mt-32" id="faq">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:px-8">
         <div className="lg:col-span-4">
-          <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
+          <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.5rem] lg:leading-[1.12]">
             {t.title}{' '}
             <span className="italic font-normal text-[#3BA3E8]">{t.titleAccent}</span>
           </h2>

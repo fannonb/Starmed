@@ -28,6 +28,7 @@ const staffLabels: Record<string, string> = {
   mental: 'Mental health',
   weight: 'Weight loss',
   omt: 'Back pain / OMT',
+  medspa: 'MedSpa consultation',
   other: 'Something else',
   new: 'New patient',
   returning: 'Returning patient',

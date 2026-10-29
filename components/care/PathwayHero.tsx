@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import LocaleLink from '@/components/layout/LocaleLink'
+import { useTranslations } from '@/components/layout/LocaleProvider'
 
 type PathwayHeroProps = {
   /** Used in breadcrumb only — not shown as a hero subtitle */
@@ -30,6 +31,8 @@ export default function PathwayHero({
   imageAlt,
   imagePosition = 'center 28%',
 }: PathwayHeroProps) {
+  const primaryCareLabel = useTranslations().pages.common.primaryCare
+
   return (
     <section className="relative min-h-[22rem] overflow-hidden sm:min-h-[24rem] lg:min-h-[28rem]">
       <Image
@@ -67,6 +70,15 @@ export default function PathwayHero({
             <li>
               <LocaleLink href="/" className="transition-colors hover:text-[#7EC8F0]">
                 {homeLabel}
+              </LocaleLink>
+            </li>
+            <li aria-hidden="true" className="text-[#3BA3E8]/70">
+              /
+            </li>
+            {/* Audience pages sit under Primary Care */}
+            <li>
+              <LocaleLink href="/primary-care" className="transition-colors hover:text-[#7EC8F0]">
+                {primaryCareLabel}
               </LocaleLink>
             </li>
             <li aria-hidden="true" className="text-[#3BA3E8]/70">

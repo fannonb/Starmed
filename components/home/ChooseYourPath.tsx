@@ -111,7 +111,7 @@ export default function ChooseYourPath() {
   return (
     <section className="scroll-mt-28 bg-white py-16 sm:py-20 lg:scroll-mt-32 lg:py-24" id="pathways">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
+        <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.5rem] lg:leading-[1.15]">
           {t.home.pathTitle}{' '}
           <span className="italic font-normal text-[#3BA3E8]">{t.home.pathTitleAccent}</span>
         </h2>

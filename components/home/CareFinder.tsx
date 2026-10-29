@@ -6,7 +6,7 @@ import LocaleLink from '@/components/layout/LocaleLink'
 import { useTranslations } from '@/components/layout/LocaleProvider'
 import { clinic } from '@/data/clinic'
 import { useLocalizedServices } from '@/hooks/useLocalizedServices'
-import type { VisitTypeId } from '@/data/appointments'
+import { bookingHref } from '@/data/primaryCare'
 
 type Who = 'me' | 'child' | 'parent' | 'team'
 type When = 'today' | 'week' | 'planning'
@@ -36,21 +36,6 @@ const needOptions: NeedId[] = [
   'ketamine',
   'other',
 ]
-
-/** Maps a recommended service to the appointment form's visit type. */
-const visitTypeByService: Record<string, VisitTypeId> = {
-  primary: 'primary',
-  chronic: 'primary',
-  diagnostics: 'labs',
-  'pediatric-geriatric': 'primary',
-  urgent: 'urgent',
-  'wellness-exams': 'wellness',
-  omt: 'omt',
-  'weight-loss': 'weight',
-  'body-composition': 'weight',
-  'mental-wellness': 'mental',
-  ketamine: 'mental',
-}
 
 const mindServices = new Set(['mental-wellness', 'ketamine'])
 
@@ -106,7 +91,7 @@ export default function CareFinder() {
   const resultId = step === 3 && who ? recommend(who, need, when) : null
   const result = resultId ? services.find((service) => service.id === resultId) : undefined
   const isToday = when === 'today'
-  const bookHref = `/appointments${resultId && visitTypeByService[resultId] ? `?visit=${visitTypeByService[resultId]}` : ''}`
+  const bookHref = bookingHref(resultId)
 
   const optionClass = (selected: boolean) =>
     `group flex w-full items-center justify-between gap-3 rounded-xl border px-4 py-3.5 text-left text-[0.95rem] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863] ${
@@ -121,7 +106,7 @@ export default function CareFinder() {
     <section className="bg-[#F4F7FB] py-16 sm:py-20 lg:py-24 scroll-mt-32" id="care-finder">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:px-8">
         <header className="lg:col-span-5">
-          <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
+          <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.5rem] lg:leading-[1.12]">
             {f.title}{' '}
             <span className="italic font-normal text-[#3BA3E8]">{f.titleAccent}</span>
           </h2>
@@ -246,10 +231,10 @@ export default function CareFinder() {
               <h3
                 ref={headingRef}
                 tabIndex={-1}
-                className="mt-4 font-serif text-[1.75rem] font-medium leading-tight tracking-tight text-[#222863] outline-none sm:text-[2rem]"
+                className="mt-4 font-serif text-[1.75rem] font-medium leading-tight tracking-tight text-[#222863] outline-none"
               >
                 <LocaleLink
-                  href={result.href ?? `/services#${result.id}`}
+                  href={result.href ?? '/primary-care'}
                   className="rounded-sm underline decoration-[#3BA3E8]/40 decoration-2 underline-offset-[6px] transition-colors hover:text-[#3BA3E8] hover:decoration-[#3BA3E8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]"
                 >
                   {result.title}

@@ -14,14 +14,11 @@ const en = {
   nav: {
     home: 'Home',
     about: 'About',
-    careIndividuals: 'Individuals & families',
-    careMental: 'Mental health',
-    megaPathways: 'Find care for',
-    services: 'Services',
+    services: 'Primary Care',
+    medspa: 'MedSpa & Wellness',
     membership: 'Membership',
     contact: 'Contact',
     faq: 'FAQ',
-    viewAll: 'View all',
     viewAllServices: 'View all services',
     menu: 'Menu',
     close: 'Close',
@@ -66,9 +63,9 @@ const en = {
       'Contact StarMed Clinic in San Antonio — call, email, or visit our I-10 clinic to schedule care or ask about membership and services.',
   },
   membership: {
-    metaTitle: 'Concierge Membership | StarMed Clinic San Antonio',
+    metaTitle: 'Membership | StarMed Clinic San Antonio',
     metaDesc:
-      'StarMed cash-pay concierge membership in San Antonio — 24/7 physician access, same-day visits, longer appointments, and annual, quarterly, or monthly plans.',
+      'Compare StarMED Essential, Premier, and Radiance memberships in San Antonio — preventive primary care, concierge access, and aesthetic and wellness benefits.',
   },
   faq: {
     metaTitle: 'Frequently Asked Questions | StarMed Clinic San Antonio',
@@ -230,14 +227,11 @@ const es: Messages = {
   nav: {
     home: 'Inicio',
     about: 'Nosotros',
-    careIndividuals: 'Personas y familias',
-    careMental: 'Salud mental',
-    megaPathways: 'Atención para',
-    services: 'Servicios',
+    services: 'Atención primaria',
+    medspa: 'MedSpa y bienestar',
     membership: 'Membresía',
     contact: 'Contacto',
     faq: 'Preguntas',
-    viewAll: 'Ver todos',
     viewAllServices: 'Ver todos los servicios',
     menu: 'Menú',
     close: 'Cerrar',
@@ -282,9 +276,9 @@ const es: Messages = {
       'Contacte StarMed Clinic en San Antonio — llame, escriba o visite nuestra clínica en I-10 para programar atención o preguntar por membresía y servicios.',
   },
   membership: {
-    metaTitle: 'Membresía Concierge | StarMed Clinic San Antonio',
+    metaTitle: 'Membresía | StarMed Clinic San Antonio',
     metaDesc:
-      'Membresía concierge de pago directo en StarMed San Antonio — acceso 24/7 al médico, visitas el mismo o siguiente día, citas más largas y planes anuales, trimestrales o mensuales.',
+      'Compare las membresías StarMED Essential, Premier y Radiance en San Antonio — atención primaria preventiva, acceso concierge y beneficios de estética y bienestar.',
   },
   faq: {
     metaTitle: 'Preguntas frecuentes | StarMed Clinic San Antonio',

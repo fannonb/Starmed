@@ -43,7 +43,7 @@ export default function CareChooser({ serviceIds }: { serviceIds: readonly NeedI
           {items.map(({ service, need }) => (
             <li key={service.id}>
               <LocaleLink
-                href={service.href ?? `/services#${service.id}`}
+                href={service.href ?? '/primary-care'}
                 className="group flex h-full flex-col rounded-2xl bg-[#F4F7FB] px-6 py-7 transition-colors hover:bg-[#EAF0F8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863] sm:px-7"
               >
                 <h3 className="font-serif text-xl font-medium tracking-tight text-[#222863] sm:text-2xl">

@@ -1,25 +1,8 @@
-import type { Metadata } from 'next'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
-import ServicesPageContent from '@/components/pages/ServicesPageContent'
+import { permanentRedirect } from 'next/navigation'
+import { isLocale } from '@/lib/i18n'
 
-export const metadata: Metadata = {
-  title: 'Services | StarMed Clinic San Antonio',
-  description:
-    'Explore StarMed’s full clinical offering — primary care, diagnostics, OMT, mental wellness, ketamine therapy, weight management, and direct primary care for businesses.',
-}
-
-export default function ServicesPage() {
-  return (
-    <div
-      className="min-h-screen bg-[#F4F7FB] text-[#1A1A1A] selection:bg-[#222863] selection:text-white"
-      id="top"
-    >
-      <Header />
-      <main id="main">
-        <ServicesPageContent />
-      </main>
-      <Footer />
-    </div>
-  )
+/** Merged into the Primary Care hub; kept so existing links and search results still land. */
+export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  permanentRedirect(`/${isLocale(locale) ? locale : 'en'}/primary-care`)
 }

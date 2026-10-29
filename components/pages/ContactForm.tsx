@@ -3,7 +3,8 @@
 import { FormEvent, startTransition, useActionState, useEffect, useRef, useState } from 'react'
 import { useTranslations } from '@/components/layout/LocaleProvider'
 import { clinic } from '@/data/clinic'
-import { contactLimits, inquiryIds, type ContactField, type ContactFormState } from '@/data/contact'
+import { contactLimits, inquiryIds, type ContactField, type ContactFormState, type InquiryId } from '@/data/contact'
+import { membershipPackageIds, type MembershipPackageId } from '@/data/membership'
 import { sendContactMessage } from '@/lib/actions/contact'
 
 const initialState: ContactFormState = { status: 'idle' }
@@ -12,16 +13,32 @@ const inputClass =
   'mt-2 w-full rounded-lg border bg-white px-3 text-base text-[#1A1A1A] outline-none transition-shadow focus:border-[#3BA3E8] focus:ring-2 focus:ring-[#3BA3E8]/20'
 
 export default function ContactForm() {
-  const t = useTranslations().pages.contactPage
+  const pages = useTranslations().pages
+  const t = pages.contactPage
   const [state, formAction, pending] = useActionState(sendContactMessage, initialState)
   const [dismissed, setDismissed] = useState<ContactFormState | null>(null)
   const [formKey, setFormKey] = useState(0)
+  const [packageId, setPackageId] = useState<MembershipPackageId | null>(null)
+  const [inquiryId, setInquiryId] = useState<InquiryId | null>(null)
   const startedAt = useRef(0)
 
   // Time-on-form check for bots; set after mount so server and client HTML match.
   useEffect(() => {
     startedAt.current = Date.now()
   }, [formKey])
+
+  // Membership cards link here with ?package=<id> to start a details request for that package;
+  // other pages can pre-select a topic with ?inquiry=<id> (e.g. employers).
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const id = params.get('package')
+    if (id && membershipPackageIds.includes(id as MembershipPackageId)) setPackageId(id as MembershipPackageId)
+    const inquiry = params.get('inquiry')
+    if (inquiry && inquiryIds.includes(inquiry as InquiryId)) setInquiryId(inquiry as InquiryId)
+  }, [formKey])
+  const packageMessage = packageId
+    ? t.packageMessage.replace('{package}', pages.access.packages[packageId].name)
+    : ''
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     // Submit manually so the form keeps what the visitor typed if the server asks for fixes.
@@ -77,7 +94,8 @@ export default function ContactForm() {
   const showAlert = state !== dismissed && state.status !== 'idle' && state.status !== 'success'
 
   return (
-    <form key={formKey} onSubmit={handleSubmit} className="space-y-4">
+    // Keyed on the prefill too, so the defaults apply once the query string is read.
+    <form key={`${formKey}-${packageId ?? ''}-${inquiryId ?? ''}`} onSubmit={handleSubmit} className="space-y-4">
       {showAlert ? (
         <p
           role="alert"
@@ -154,7 +172,7 @@ export default function ContactForm() {
           <select
             {...fieldProps('inquiry')}
             required
-            defaultValue=""
+            defaultValue={packageId ? 'membership' : (inquiryId ?? '')}
             className={`${fieldProps('inquiry').className} h-11`}
           >
             <option value="" disabled>
@@ -176,6 +194,7 @@ export default function ContactForm() {
           {...fieldProps('message')}
           required
           rows={5}
+          defaultValue={packageMessage}
           maxLength={contactLimits.message}
           className={`${fieldProps('message').className} resize-y py-2.5`}
         />

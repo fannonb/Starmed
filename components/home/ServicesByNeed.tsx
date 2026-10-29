@@ -43,7 +43,7 @@ export default function ServicesByNeed() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
+            <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.5rem] lg:leading-[1.12]">
               {t.title}{' '}
               <span className="italic font-normal text-[#3BA3E8]">{t.titleAccent}</span>
             </h2>
@@ -65,7 +65,7 @@ export default function ServicesByNeed() {
           {items.map(({ service, Icon }) => (
             <li key={service.id} className="w-[42%] min-w-[9.5rem] shrink-0 snap-start sm:w-auto sm:min-w-0">
               <LocaleLink
-                href={service.href ?? `/services#${service.id}`}
+                href={service.href ?? '/primary-care'}
                 className="group flex h-full flex-col items-center rounded-[1.5rem] bg-white px-4 py-7 text-center ring-1 ring-[#DCE3F0] transition-[background-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-1 hover:bg-[#222863] hover:shadow-[0_24px_48px_-28px_rgba(34,40,99,0.7)] hover:ring-[#222863] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:px-6 sm:py-9"
               >
                 <span

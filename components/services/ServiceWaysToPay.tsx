@@ -3,35 +3,32 @@
 import LocaleLink from '@/components/layout/LocaleLink'
 import { useTranslations } from '@/components/layout/LocaleProvider'
 import { clinic } from '@/data/clinic'
+import { bookingHref, groupOfService } from '@/data/primaryCare'
+import { useCurrentService, useLocalizedServices } from '@/hooks/useLocalizedServices'
 
-/** Membership, self-pay, or insurance visit, shared by service detail pages. */
+/**
+ * Insurance, self-pay, or a medical membership, shared by Primary Care pages.
+ * On a service page, booking links pre-select that visit type and related services in the same group follow.
+ */
 export default function ServiceWaysToPay() {
   const { pages } = useTranslations()
-  const t = pages.twoWays
+  const t = pages.waysToPay
+  const current = useCurrentService()
+  const services = useLocalizedServices()
+  const book = bookingHref(current?.id)
 
   const options = [
-    {
-      title: t.memberTitle,
-      desc: t.memberDesc,
-      points: t.memberPoints,
-      cta: t.memberCta,
-      href: '/membership',
-    },
-    {
-      title: t.selfPayTitle,
-      desc: t.selfPayDesc,
-      points: t.selfPayPoints,
-      cta: t.selfPayCta,
-      href: '/appointments',
-    },
-    {
-      title: t.insuranceTitle,
-      desc: t.insuranceDesc,
-      points: t.insurancePoints,
-      cta: t.insuranceCta,
-      href: '/appointments',
-    },
+    { ...t.insurance, href: book },
+    { ...t.selfPay, href: book },
+    // Medical pages point to the full comparison; Radiance there is marked as MedSpa-only
+    { ...t.membership, href: '/membership#compare' },
   ]
+
+  const related = current
+    ? (groupOfService(current.id)?.serviceIds ?? [])
+        .filter((id) => id !== current.id)
+        .flatMap((id) => services.filter((service) => service.id === id))
+    : []
 
   return (
     <section id="ways-to-pay" className="bg-[#F4F7FB] py-14 sm:py-16 lg:py-20">
@@ -39,6 +36,7 @@ export default function ServiceWaysToPay() {
         <h2 className="font-serif text-3xl font-medium tracking-tight text-[#222863] sm:text-4xl">
           {pages.common.waysToPay}
         </h2>
+        <p className="mt-3 text-base text-[#5A6270]">{t.desc}</p>
 
         <div className="mt-8 grid gap-0 overflow-hidden border border-[#D5DEEA] lg:grid-cols-3">
           {options.map((option, index) => (
@@ -54,7 +52,7 @@ export default function ServiceWaysToPay() {
               <p className="mt-2 text-sm leading-relaxed text-[#5A6270] sm:text-base">
                 {option.desc}
               </p>
-              <ul className="mt-5 space-y-2 text-sm text-[#251719]">
+              <ul className="mt-5 flex-1 space-y-2 text-sm text-[#251719]">
                 {option.points.map((point) => (
                   <li key={point} className="flex gap-2.5">
                     <span aria-hidden="true" className="text-[#3BA3E8]">
@@ -75,7 +73,7 @@ export default function ServiceWaysToPay() {
         </div>
 
         <p className="mt-6 text-sm text-[#5A6270]">
-          {pages.common.questions}{' '}
+          {t.note} {pages.common.questions}{' '}
           <a
             href={clinic.phoneHref}
             className="font-semibold text-[#222863] underline-offset-4 hover:underline"
@@ -83,6 +81,26 @@ export default function ServiceWaysToPay() {
             {clinic.phoneDisplay}
           </a>
         </p>
+
+        {related.length > 0 ? (
+          <nav aria-labelledby="related-services" className="mt-12 border-t border-[#DCE3F0] pt-8">
+            <h2 id="related-services" className="text-sm font-semibold text-[#222863]">
+              {pages.common.related}
+            </h2>
+            <ul className="mt-4 flex flex-wrap gap-x-8 gap-y-3">
+              {related.map((service) => (
+                <li key={service.id}>
+                  <LocaleLink
+                    href={service.href ?? '/primary-care'}
+                    className="font-serif text-lg font-medium tracking-tight text-[#222863] transition-colors hover:text-[#3BA3E8]"
+                  >
+                    {service.title} <span aria-hidden="true">→</span>
+                  </LocaleLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ) : null}
       </div>
     </section>
   )

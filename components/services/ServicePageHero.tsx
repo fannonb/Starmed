@@ -3,6 +3,9 @@
 import Image from 'next/image'
 import LocaleLink from '@/components/layout/LocaleLink'
 import { useTranslations } from '@/components/layout/LocaleProvider'
+import { clinic } from '@/data/clinic'
+import { visitTypeByService } from '@/data/primaryCare'
+import { useCurrentService } from '@/hooks/useLocalizedServices'
 
 type ServicePageHeroProps = {
   title: string
@@ -23,7 +26,10 @@ export default function ServicePageHero({
   breadcrumb,
   imagePosition = 'center 28%',
 }: ServicePageHeroProps) {
-  const servicesLabel = useTranslations().pages.common.services
+  const { pages, common } = useTranslations()
+  const current = useCurrentService()
+  // Only services with a matching visit type get a booking shortcut (not employer care)
+  const visit = current ? visitTypeByService[current.id] : undefined
 
   return (
     <section className="relative min-h-[22rem] overflow-hidden sm:min-h-[24rem] lg:min-h-[28rem]">
@@ -53,8 +59,16 @@ export default function ServicePageHero({
         <nav aria-label="Breadcrumb" className="mb-5">
           <ol className="flex flex-wrap items-center gap-2 text-sm text-white/60">
             <li>
-              <LocaleLink href="/services" className="transition-colors hover:text-[#7EC8F0]">
-                {servicesLabel}
+              <LocaleLink href="/" className="transition-colors hover:text-[#7EC8F0]">
+                {common.home}
+              </LocaleLink>
+            </li>
+            <li aria-hidden="true" className="text-[#3BA3E8]/70">
+              /
+            </li>
+            <li>
+              <LocaleLink href="/primary-care" className="transition-colors hover:text-[#7EC8F0]">
+                {pages.common.primaryCare}
               </LocaleLink>
             </li>
             <li aria-hidden="true" className="text-[#3BA3E8]/70">
@@ -75,6 +89,23 @@ export default function ServicePageHero({
             ) : null}
           </h1>
           <p className="mt-4 max-w-lg text-base leading-relaxed text-white/80">{description}</p>
+
+          {visit ? (
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <LocaleLink
+                href={`/appointments?visit=${visit}`}
+                className="inline-flex h-12 items-center justify-center rounded-lg bg-white px-6 text-sm font-semibold text-[#222863] transition-colors hover:bg-[#EAF0FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                {pages.primaryCarePage.bookThis}
+              </LocaleLink>
+              <a
+                href={clinic.phoneHref}
+                className="inline-flex h-12 items-center justify-center rounded-lg border border-white/40 px-6 text-sm font-semibold text-white transition-colors hover:border-white/70 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                {pages.primaryCarePage.callCta.replace('{phone}', clinic.phoneDisplay)}
+              </a>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

@@ -1,11 +1,9 @@
 import Header from '@/components/layout/Header'
 import Hero from '@/components/home/Hero'
-import CareFinder from '@/components/home/CareFinder'
-import ChooseYourPath from '@/components/home/ChooseYourPath'
-import CareThatFits from '@/components/home/CareThatFits'
-import ServicesByNeed from '@/components/home/ServicesByNeed'
-import StandardOfCare from '@/components/home/StandardOfCare'
+import CarePanels from '@/components/home/CarePanels'
+import AccessOptions from '@/components/home/AccessOptions'
 import PatientTestimonials from '@/components/home/PatientTestimonials'
+import HomeFaq from '@/components/home/HomeFaq'
 import VisitUs from '@/components/home/VisitUs'
 import Footer from '@/components/layout/Footer'
 
@@ -19,12 +17,10 @@ export default function HomePage() {
 
       <main id="main">
         <Hero />
-        <CareFinder />
-        <ChooseYourPath />
-        <ServicesByNeed />
-        <CareThatFits />
-        <StandardOfCare />
+        <CarePanels />
+        <AccessOptions />
         <PatientTestimonials />
+        <HomeFaq />
         <VisitUs />
       </main>
 

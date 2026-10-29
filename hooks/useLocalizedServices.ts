@@ -1,5 +1,6 @@
 import { services, type Service } from '@/data/services'
-import type { Locale } from '@/lib/i18n'
+import { usePathname } from 'next/navigation'
+import { stripLocale, type Locale } from '@/lib/i18n'
 import { catalogEn, catalogEs } from '@/messages/catalog'
 import { useLocale } from '@/components/layout/LocaleProvider'
 
@@ -26,4 +27,10 @@ export function useLocalizedServices(): Service[] {
 
 export function useLocalizedService(id: string): Service | undefined {
   return useLocalizedServices().find((service) => service.id === id)
+}
+
+/** The service whose detail page is open, if any — lets shared blocks tailor booking links. */
+export function useCurrentService(): Service | undefined {
+  const path = stripLocale(usePathname() || '/')
+  return useLocalizedServices().find((service) => service.href === path)
 }

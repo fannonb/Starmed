@@ -12,7 +12,7 @@ export default function VisitUs() {
     <section className="bg-[#F4F7FB] py-16 sm:py-20 lg:py-24 scroll-mt-32" id="contact">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header>
-          <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
+          <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.5rem] lg:leading-[1.12]">
             {t.title}{' '}
             <span className="italic font-normal text-[#3BA3E8]">{t.titleAccent}</span>
           </h2>
@@ -96,6 +96,12 @@ export default function VisitUs() {
               className="mt-7 inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-[#222863] transition-colors hover:bg-[#EAF0FF]"
             >
               {t.bookCta}
+            </LocaleLink>
+            <LocaleLink
+              href="/appointments?visit=medspa"
+              className="mt-3 inline-flex items-center justify-center rounded-full border border-white/40 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-white/70 hover:bg-white/10"
+            >
+              {t.medspaCta}
             </LocaleLink>
             <p className="mt-3 text-center text-xs text-white/60">{t.emergency}</p>
           </article>

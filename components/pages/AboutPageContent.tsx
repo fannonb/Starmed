@@ -21,7 +21,7 @@ const cardBg: Record<Tone, string> = { tint: 'bg-white', white: 'bg-[#F4F7FB]' }
 
 function SectionTitle({ title, accent }: { title: string; accent: string }) {
   return (
-    <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
+    <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.5rem] lg:leading-[1.12]">
       {title} <span className="italic font-normal text-[#3BA3E8]">{accent}</span>
     </h2>
   )

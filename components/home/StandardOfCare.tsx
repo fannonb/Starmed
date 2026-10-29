@@ -9,7 +9,7 @@ export default function StandardOfCare() {
     <section className="bg-[#F4F7FB] py-16 sm:py-20 lg:py-24 scroll-mt-32" id="standard-of-care">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header>
-          <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
+          <h2 className="font-serif text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-4xl lg:text-[2.5rem] lg:leading-[1.12]">
             {t.title}{' '}
             <span className="italic font-normal text-[#3BA3E8]">{t.titleAccent}</span>
           </h2>

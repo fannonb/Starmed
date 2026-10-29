@@ -8,7 +8,7 @@ import LocaleLink from '@/components/layout/LocaleLink'
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher'
 import SpanishWelcome from '@/components/layout/SpanishWelcome'
 import { useTranslations } from '@/components/layout/LocaleProvider'
-import { serviceIcons } from '@/components/services/serviceIcons'
+import { primaryCareGroups } from '@/data/primaryCare'
 import { useLocalizedServices } from '@/hooks/useLocalizedServices'
 import { stripLocale } from '@/lib/i18n'
 
@@ -29,23 +29,18 @@ export default function Header() {
   const servicesId = useId()
   const mobileServicesId = useId()
 
-  const menuServices = useMemo(
+  // Same four groups as the homepage panel and the Primary Care page
+  const menuGroups = useMemo(
     () =>
-      serviceIcons.flatMap(([id, Icon]) => {
-        const service = localizedServices.find((s) => s.id === id)
-        return service ? [{ service, Icon }] : []
-      }),
-    [localizedServices],
-  )
-
-  // Who the care is for: shown first in the Services menu
-  const careLinks = useMemo(
-    () => [
-      { href: '/care/individuals', label: t.nav.careIndividuals },
-      { href: '/care/mental-health', label: t.nav.careMental },
-      { href: '/care/employers', label: t.nav.categoryEmployers },
-    ],
-    [t],
+      primaryCareGroups.map((group) => ({
+        id: group.id,
+        title: t.pages.carePanels.primaryGroups[group.id].title,
+        services: group.serviceIds.flatMap((id) => {
+          const service = localizedServices.find((s) => s.id === id)
+          return service ? [service] : []
+        }),
+      })),
+    [localizedServices, t],
   )
 
   // Menu order: Home, About, Services (menu), then these
@@ -59,8 +54,9 @@ export default function Header() {
 
   const navLinks = useMemo(
     () => [
+      // Employer care stays reachable from the Services menu
+      { href: '/medspa', label: t.nav.medspa },
       { href: '/membership', label: t.nav.membership },
-      { href: '/care/employers', label: t.nav.categoryEmployers },
       { href: '/contact', label: t.nav.contact },
     ],
     [t],
@@ -130,10 +126,10 @@ export default function Header() {
   }
 
   const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
-  const inServices = isCurrent('/services') || isCurrent('/care')
+  const inServices = isCurrent('/primary-care') || isCurrent('/services') || isCurrent('/care')
 
   const navLinkClass = (active: boolean) =>
-    `relative whitespace-nowrap rounded-md px-2 py-2 text-base font-semibold xl:text-[17px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863] after:absolute after:inset-x-2 after:-bottom-0.5 after:h-0.5 after:rounded-full after:transition-colors ${
+    `relative whitespace-nowrap rounded-md px-2 py-2 text-[15px] font-medium xl:text-[16px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863] after:absolute after:inset-x-2 after:-bottom-0.5 after:h-0.5 after:rounded-full after:transition-colors ${
       active
         ? 'text-[#222863] after:bg-[#3BA3E8]'
         : 'text-[#5A6270] after:bg-transparent hover:text-[#1A1A1A]'
@@ -200,9 +196,9 @@ export default function Header() {
               }}
             >
               <LocaleLink
-                href="/services"
+                href="/primary-care"
                 className={`inline-flex items-center gap-1 ${navLinkClass(inServices)}`}
-                aria-current={inServices && path === '/services' ? 'page' : undefined}
+                aria-current={inServices && path === '/primary-care' ? 'page' : undefined}
                 aria-expanded={servicesOpen}
                 aria-controls={servicesId}
                 onFocus={openServices}
@@ -230,49 +226,44 @@ export default function Header() {
                 // Top padding bridges the gap to the header's bottom edge so hover isn't lost
                 <div id={servicesId} className="absolute left-0 top-full z-30 pt-7">
                   <div className="w-[40rem] overflow-hidden rounded-2xl bg-white shadow-[0_24px_48px_-20px_rgba(34,40,99,0.35)] ring-1 ring-[#E3E8F0]">
-                    <div className="border-b border-[#E3E8F0] bg-[#F4F7FB] px-5 py-4">
-                      <p className="text-sm text-[#5A6270]">{t.nav.megaPathways}</p>
-                      <ul className="mt-2 flex flex-wrap gap-2">
-                        {careLinks.map((item) => (
-                          <li key={item.href}>
-                            <LocaleLink
-                              href={item.href}
-                              aria-current={isCurrent(item.href) ? 'page' : undefined}
-                              className="inline-flex rounded-full bg-white px-3.5 py-1.5 text-sm font-semibold text-[#222863] ring-1 ring-[#DCE3F0] transition-colors hover:bg-[#222863] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]"
-                              onClick={() => setServicesOpen(false)}
-                            >
-                              {item.label}
-                            </LocaleLink>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <ul className="grid grid-cols-2 gap-x-2 gap-y-0.5 p-3">
-                      {menuServices.map(({ service, Icon }) => (
-                        <li key={service.id}>
-                          <LocaleLink
-                            href={service.href ?? `/services#${service.id}`}
-                            className="group flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm font-medium leading-snug text-[#1A1A1A] transition-colors hover:bg-[#F4F7FB] hover:text-[#222863] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#222863]"
-                            onClick={() => setServicesOpen(false)}
-                          >
-                            <span
-                              aria-hidden="true"
-                              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#EEF3FF] text-[#222863] transition-colors group-hover:bg-[#222863] group-hover:text-white"
-                            >
-                              <Icon className="h-4 w-4" strokeWidth={1.6} />
-                            </span>
-                            {service.title}
-                          </LocaleLink>
-                        </li>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-6 p-6">
+                      {menuGroups.map((group) => (
+                        <div key={group.id}>
+                          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#3BA3E8]">
+                            {group.title}
+                          </p>
+                          <ul className="mt-2">
+                            {group.services.map((service) => (
+                              <li key={service.id}>
+                                <LocaleLink
+                                  href={service.href ?? '/primary-care'}
+                                  aria-current={service.href && isCurrent(service.href) ? 'page' : undefined}
+                                  className="-mx-2 block rounded-md px-2 py-1.5 text-sm font-medium text-[#1A1A1A] transition-colors hover:bg-[#F4F7FB] hover:text-[#222863] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#222863] aria-[current=page]:text-[#222863]"
+                                  onClick={() => setServicesOpen(false)}
+                                >
+                                  {service.title}
+                                </LocaleLink>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       ))}
-                    </ul>
-                    <div className="border-t border-[#E3E8F0] px-5 py-3 text-sm">
+                    </div>
+                    <div className="flex items-center justify-between gap-4 border-t border-[#E3E8F0] bg-[#F4F7FB] px-6 py-3.5 text-sm font-semibold">
                       <LocaleLink
-                        href="/services"
-                        className="font-semibold text-[#3BA3E8] transition-colors hover:text-[#2B92D4]"
+                        href="/primary-care"
+                        className="text-[#3BA3E8] transition-colors hover:text-[#2B92D4]"
                         onClick={() => setServicesOpen(false)}
                       >
-                        {t.nav.viewAll} →
+                        {t.nav.viewAllServices} →
+                      </LocaleLink>
+                      <LocaleLink
+                        href="/care/employers"
+                        aria-current={isCurrent('/care/employers') ? 'page' : undefined}
+                        className="text-[#222863] transition-colors hover:text-[#3BA3E8]"
+                        onClick={() => setServicesOpen(false)}
+                      >
+                        {t.nav.categoryEmployers} →
                       </LocaleLink>
                     </div>
                   </div>
@@ -306,12 +297,12 @@ export default function Header() {
             <LanguageSwitcher />
             <button
               type="button"
-              className="inline-flex h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-[#222863] ring-1 ring-[#DCE3F0] transition-colors hover:bg-[#F4F7FB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-[#222863] ring-1 ring-[#DCE3F0] transition-colors hover:bg-[#F4F7FB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222863]"
+              aria-label={mobileOpen ? t.nav.close : t.nav.menu}
               aria-expanded={mobileOpen}
               aria-controls={menuId}
               onClick={() => setMobileOpen((open) => !open)}
             >
-              <span>{mobileOpen ? t.nav.close : t.nav.menu}</span>
               {mobileOpen ? (
                 <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
                   <path
@@ -391,48 +382,36 @@ export default function Header() {
               </div>
 
               {mobileServicesOpen ? (
-                <div id={mobileServicesId} className="pb-3">
-                  <p className="px-1 text-sm text-[#5A6270]">{t.nav.megaPathways}</p>
-                  <ul className="mt-2 mb-3 flex flex-wrap gap-2 px-1">
-                    {careLinks.map((item) => (
-                      <li key={item.href}>
-                        <LocaleLink
-                          href={item.href}
-                          aria-current={isCurrent(item.href) ? 'page' : undefined}
-                          className="inline-flex rounded-full bg-[#F4F7FB] px-3.5 py-2 text-sm font-semibold text-[#222863] ring-1 ring-[#DCE3F0]"
-                          onClick={closeMobile}
-                        >
-                          {item.label}
-                        </LocaleLink>
-                      </li>
-                    ))}
-                  </ul>
-                  <ul className="grid gap-0.5 rounded-xl bg-[#F4F7FB] p-2 sm:grid-cols-2">
-                    {menuServices.map(({ service, Icon }) => (
-                      <li key={service.id}>
-                        <LocaleLink
-                          href={service.href ?? `/services#${service.id}`}
-                          className="flex min-h-11 items-center gap-3 rounded-lg px-2 py-1.5 text-base font-medium text-[#1A1A1A] active:bg-white"
-                          onClick={closeMobile}
-                        >
-                          <span
-                            aria-hidden="true"
-                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-[#222863]"
-                          >
-                            <Icon className="h-4 w-4" strokeWidth={1.6} />
-                          </span>
-                          {service.title}
-                        </LocaleLink>
-                      </li>
-                    ))}
-                  </ul>
-                  <LocaleLink
-                    href="/services"
-                    className="mt-3 inline-flex px-1 text-sm font-semibold text-[#222863]"
-                    onClick={closeMobile}
-                  >
-                    {t.nav.viewAllServices} →
-                  </LocaleLink>
+                <div id={mobileServicesId} className="space-y-5 pb-4">
+                  {menuGroups.map((group) => (
+                    <div key={group.id}>
+                      <p className="px-1 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#3BA3E8]">
+                        {group.title}
+                      </p>
+                      <ul className="mt-1">
+                        {group.services.map((service) => (
+                          <li key={service.id}>
+                            <LocaleLink
+                              href={service.href ?? '/primary-care'}
+                              aria-current={service.href && isCurrent(service.href) ? 'page' : undefined}
+                              className="flex min-h-11 items-center rounded-lg px-1 text-base font-medium text-[#1A1A1A] active:bg-[#F4F7FB] aria-[current=page]:text-[#222863]"
+                              onClick={closeMobile}
+                            >
+                              {service.title}
+                            </LocaleLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                  <div className="flex flex-wrap gap-x-6 gap-y-2 border-t border-[#E3E8F0] px-1 pt-4 text-sm font-semibold">
+                    <LocaleLink href="/primary-care" className="text-[#3BA3E8]" onClick={closeMobile}>
+                      {t.nav.viewAllServices} →
+                    </LocaleLink>
+                    <LocaleLink href="/care/employers" className="text-[#222863]" onClick={closeMobile}>
+                      {t.nav.categoryEmployers} →
+                    </LocaleLink>
+                  </div>
                 </div>
               ) : null}
             </div>

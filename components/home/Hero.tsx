@@ -1,20 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import { ArrowDown, MapPin, Pause, Play } from 'lucide-react'
+import { Languages, MapPin } from 'lucide-react'
 import LocaleLink from '@/components/layout/LocaleLink'
 import { useTranslations } from '@/components/layout/LocaleProvider'
 import GoogleMark from '@/components/ui/GoogleMark'
-
-/** `position` frames the people in each photo: the phone band first, then the tablet/desktop backdrop. */
-const slides = [
-  { src: '/hero-slide-1.jpg', position: 'object-[60%_center] sm:object-[70%_center]' },
-  { src: '/hero-slide-2.jpg', position: 'object-[60%_center] sm:object-[64%_center]' },
-  { src: '/hero-slide-3.jpg', position: 'object-[50%_center] sm:object-[56%_center]' },
-]
-
-const SLIDE_MS = 7000
 
 function Star() {
   return (
@@ -30,125 +20,85 @@ function Star() {
 export default function Hero() {
   const messages = useTranslations()
   const t = messages.pages.hero
-  const [active, setActive] = useState(0)
-  const [previous, setPrevious] = useState<number | null>(null)
-  const [playing, setPlaying] = useState(true)
-  // Only the first photo loads with the page; the rest mount after hydration
-  const [ready, setReady] = useState(false)
-
-  useEffect(() => {
-    setReady(true)
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPlaying(false)
-  }, [])
-
-  const show = (index: number) => {
-    if (index === active) return
-    setPrevious(active)
-    setActive(index)
-  }
-
-  useEffect(() => {
-    if (!playing || !ready) return
-    const timer = window.setTimeout(() => {
-      setPrevious(active)
-      setActive((active + 1) % slides.length)
-    }, SLIDE_MS)
-    return () => window.clearTimeout(timer)
-  }, [active, playing, ready])
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#0B1530]">
-      {/* Phone: photo band above the copy. Tablet/desktop: full-bleed backdrop behind it. */}
-      <div className="relative h-60 sm:absolute sm:inset-0 sm:h-auto">
-        <div aria-hidden="true" className="absolute inset-0">
-          {slides.map((slide, index) => {
-            if (index > 0 && !ready) return null
-            const visible = index === active
-            // Keep the outgoing photo zooming while it fades so it doesn't snap back
-            const zooming = index === active || index === previous
-            return (
-              <div
-                key={slide.src}
-                className={`absolute inset-0 transition-opacity duration-[1400ms] ease-in-out motion-reduce:transition-none ${
-                  visible ? 'opacity-100' : 'opacity-0'
-                }`}
-              >
-                <Image
-                  src={slide.src}
-                  alt=""
-                  fill
-                  preload={index === 0}
-                  sizes="100vw"
-                  className={`object-cover ${slide.position} ${
-                    zooming ? 'motion-safe:animate-[hero-zoom_9s_ease-out_forwards]' : ''
-                  }`}
-                  style={{ animationPlayState: playing ? 'running' : 'paused' }}
-                />
-              </div>
-            )
-          })}
-          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#0B1530] sm:hidden" />
-        </div>
+    <section
+      className="relative w-full overflow-hidden"
+      style={{ background: 'linear-gradient(115deg, #0B1530 0%, #151d47 55%, #222863 100%)' }}
+    >
+      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 pb-12 pt-6 sm:px-6 sm:py-14 lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-20 lg:px-8">
+        {/* Phones: both kinds of care side by side above the copy. Desktop: overlapping pair on the right. */}
+        <div className="order-first lg:order-last lg:col-span-6">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:hidden">
+            <div className="relative h-44 overflow-hidden rounded-xl sm:h-64">
+              <Image
+                src="/hero-slide-1.jpg"
+                alt={t.clinicImageAlt}
+                fill
+                preload
+                sizes="50vw"
+                className="object-cover object-[70%_center]"
+              />
+            </div>
+            <div className="relative h-44 overflow-hidden rounded-xl sm:h-64">
+              <Image
+                src="/medspa-treatment.jpg"
+                alt={t.medspaImageAlt}
+                fill
+                sizes="50vw"
+                className="object-cover object-[55%_center]"
+              />
+            </div>
+          </div>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
-          <div className="mx-auto flex max-w-6xl justify-end px-4 pb-3 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8">
-            <div
-              role="group"
-              aria-label={t.slidesLabel}
-              className="pointer-events-auto flex items-center gap-2 rounded-full bg-black/25 py-1 pl-1 pr-3 ring-1 ring-white/20 backdrop-blur-sm"
-            >
-              <button
-                type="button"
-                onClick={() => setPlaying((value) => !value)}
-                aria-label={playing ? t.pauseSlides : t.playSlides}
-                className="flex h-7 w-7 items-center justify-center rounded-full text-white transition-colors hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
-              >
-                {playing ? (
-                  <Pause className="h-3.5 w-3.5" aria-hidden="true" fill="currentColor" />
-                ) : (
-                  <Play className="h-3.5 w-3.5" aria-hidden="true" fill="currentColor" />
-                )}
-              </button>
-              {slides.map((slide, index) => (
-                <button
-                  key={slide.src}
-                  type="button"
-                  onClick={() => show(index)}
-                  aria-label={t.showSlide.replace('{n}', String(index + 1))}
-                  aria-current={index === active}
-                  className="flex h-7 items-center rounded-full px-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
-                >
-                  <span
-                    className={`block h-1.5 rounded-full transition-all duration-500 ${
-                      index === active ? 'w-6 bg-white' : 'w-1.5 bg-white/45 hover:bg-white/70'
-                    }`}
-                  />
-                </button>
-              ))}
+          <div className="relative hidden h-[30rem] lg:block">
+            <div className="absolute right-0 top-0 h-[82%] w-[80%] overflow-hidden rounded-[1.75rem] shadow-[0_32px_70px_-36px_rgba(0,0,0,0.7)]">
+              <Image
+                src="/hero-slide-1.jpg"
+                alt={t.clinicImageAlt}
+                fill
+                preload
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover object-[92%_center]"
+              />
+            </div>
+            <div className="absolute bottom-0 left-0 h-[52%] w-[50%] overflow-hidden rounded-[1.5rem] ring-[6px] ring-[#151d47] shadow-[0_28px_60px_-30px_rgba(0,0,0,0.75)]">
+              <Image
+                src="/medspa-treatment.jpg"
+                alt={t.medspaImageAlt}
+                fill
+                sizes="(min-width: 1024px) 25vw, 100vw"
+                className="object-cover object-[55%_center]"
+              />
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Tablet/desktop: left→right wash keeps the copy readable and the people bright on the right */}
-      <div
-        className="pointer-events-none absolute inset-0 hidden sm:block"
-        style={{
-          background:
-            'linear-gradient(90deg, rgba(8,16,32,0.90) 0%, rgba(8,16,32,0.78) 28%, rgba(8,16,32,0.38) 52%, rgba(8,16,32,0.08) 72%, transparent 100%)',
-        }}
-      />
-      <div
-        className="pointer-events-none absolute inset-0 hidden sm:block"
-        style={{
-          background: 'linear-gradient(115deg, rgba(34,40,99,0.28) 0%, transparent 42%)',
-        }}
-      />
+        <div className="lg:col-span-6">
+          <h1 className="max-w-xl font-serif text-[2rem] font-medium leading-[1.12] tracking-tight text-white sm:text-[2.6rem] lg:text-[2.9rem]">
+            {t.titleBefore} <span className="italic font-normal">{t.titleAccent}</span>
+          </h1>
 
-      <div className="relative mx-auto flex max-w-6xl flex-col px-4 pb-10 pt-4 sm:min-h-[34rem] sm:justify-center sm:px-6 sm:py-14 lg:min-h-[38rem] lg:px-8">
-        <div className="max-w-2xl">
-          {/* Trust first, so it's visible without scrolling */}
-          <ul className="mb-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/90">
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-white/85 sm:text-lg">
+            {t.description}
+          </p>
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <LocaleLink
+              href="/appointments"
+              className="inline-flex h-12 items-center justify-center rounded-lg bg-white px-6 text-sm font-semibold text-[#222863] shadow-[0_12px_28px_-14px_rgba(0,0,0,0.55)] transition-colors hover:bg-[#EAF0FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              {t.bookCta}
+            </LocaleLink>
+            <LocaleLink
+              href="/appointments?visit=medspa"
+              className="inline-flex h-12 items-center justify-center rounded-lg border border-white/40 px-6 text-sm font-semibold text-white transition-colors hover:border-white/70 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              {t.medspaCta}
+            </LocaleLink>
+          </div>
+
+          <ul className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-white/90">
             <li>
               <a
                 href="#testimonials"
@@ -171,31 +121,11 @@ export default function Hero() {
               <MapPin className="h-4 w-4 text-[#7EC8F0]" aria-hidden="true" />
               {t.trustYears}
             </li>
+            <li className="flex items-center gap-2">
+              <Languages className="h-4 w-4 text-[#7EC8F0]" aria-hidden="true" />
+              {t.bilingual}
+            </li>
           </ul>
-
-          <h1 className="max-w-xl font-serif text-[2rem] font-medium leading-[1.12] tracking-tight text-white sm:text-[2.6rem] lg:text-[2.9rem]">
-            {t.titleBefore} <span className="italic font-normal">{t.titleAccent}</span>
-          </h1>
-
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-white/90 sm:text-lg">
-            {t.description}
-          </p>
-
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <LocaleLink
-              href="/appointments"
-              className="inline-flex h-12 items-center justify-center rounded-lg bg-white px-6 text-sm font-semibold text-[#222863] shadow-[0_12px_28px_-14px_rgba(0,0,0,0.55)] transition-colors hover:bg-[#EAF0FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              {t.bookCta}
-            </LocaleLink>
-            <a
-              href="#care-finder"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-white/40 px-6 text-sm font-semibold text-white transition-colors hover:border-white/70 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              {t.finderCta}
-              <ArrowDown className="h-4 w-4" aria-hidden="true" />
-            </a>
-          </div>
         </div>
       </div>
     </section>

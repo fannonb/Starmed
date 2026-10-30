@@ -30,9 +30,10 @@ export const pagesEn = {
     medspaDesc: 'Aesthetic and wellness treatments, planned with you at a consultation.',
     medspaGroups: {
       injectables: { title: 'Injectables', desc: 'Botox, neuromodulators, and dermal fillers' },
-      skin: { title: 'Skin rejuvenation', desc: 'Microneedling, peels, laser, and RF treatments' },
+      laser: { title: 'Laser rejuvenation', desc: 'CO₂ resurfacing, YAG, BBL, and Lutronic lasers' },
+      body: { title: 'Skin tightening & body contouring', desc: 'Body Sculpt, Body Tone, RF, and HIFU' },
+      renewal: { title: 'Microneedling & regenerative care', desc: 'RF microneedling, PRP, peels, and hair restoration' },
       wellness: { title: 'Wellness & hormones', desc: 'IV hydration, NAD+, and hormone health' },
-      hair: { title: 'Hair & regenerative care', desc: 'PRP and hair restoration consultations' },
     },
     medspaCta: 'Book a MedSpa consultation',
     medspaNote: 'Treatment availability, candidacy, and pricing are confirmed at your consultation.',
@@ -103,23 +104,121 @@ export const pagesEn = {
   medspaPage: {
     metaTitle: 'MedSpa & Wellness | StarMed Clinic San Antonio',
     metaDesc:
-      'Injectables, skin rejuvenation, IV hydration, hormone health, and hair restoration in San Antonio. Every treatment starts with a consultation.',
+      'Botox, fillers, laser resurfacing, body contouring, RF microneedling, IV hydration, and hormone health in San Antonio. Every treatment starts with a consultation.',
+    heroDesc: 'Rediscover a more youthful, radiant you — without surgery. Every treatment is planned with you at a consultation.',
+    approachTitle: 'Natural-looking results, planned around you',
+    approachText:
+      'StarMED brings medical expertise and advanced aesthetic technology together in one clinic. Your plan is built around your skin, your goals, and your safety, with physician-supervised care at every step.',
+    approachQuote: 'The goal isn’t to change how you look. It’s to enhance what makes you naturally you.',
     menuTitle: 'Treatment menu',
     consultTitle: 'Start with a consultation',
     treatments: {
-      botox: { title: 'Botox & neuromodulators', desc: 'Personalized wrinkle-relaxing consultations and treatments.' },
-      fillers: { title: 'Dermal fillers', desc: 'Thoughtful facial balancing and volume restoration.' },
-      skin: { title: 'Skin rejuvenation', desc: 'Microneedling, peels, and customized skin health plans.' },
-      laser: { title: 'Laser & RF treatments', desc: 'Technology-based resurfacing and tightening options, subject to availability.' },
-      iv: { title: 'IV hydration & NAD+', desc: 'Medical screening and personalized infusion services where appropriate.' },
-      hormones: { title: 'Hormone health', desc: 'Men’s and women’s hormone assessment and individualized management.' },
-      weight: { title: 'Medical weight loss', desc: 'Metabolic evaluation, nutrition support, and prescription therapy when appropriate.' },
-      hair: { title: 'Hair & regenerative care', desc: 'Consultations for PRP and hair restoration treatment options.' },
+      botox: {
+        title: 'Botox® & neuromodulators',
+        tagline: 'Smooth fine lines. Refresh your expression.',
+        desc: 'Softens forehead lines, crow’s feet, and frown lines while keeping natural movement.',
+      },
+      fillers: {
+        title: 'Dermal fillers',
+        tagline: 'Restore volume. Enhance definition.',
+        desc: 'Restores lost volume and rebalances facial contours for a refreshed, natural look.',
+      },
+      co2: {
+        title: 'CO₂ laser resurfacing',
+        tagline: 'Renew skin texture.',
+        desc: 'Improves the look of wrinkles, acne scars, and uneven texture by prompting your skin to renew itself.',
+      },
+      bbl: {
+        title: 'YAG laser & BroadBand Light (BBL)',
+        tagline: 'A clearer, more even complexion.',
+        desc: 'Targets sun damage, pigmentation, and uneven skin tone.',
+      },
+      lutronic: {
+        title: 'Lutronic laser',
+        tagline: 'Precision skin renewal.',
+        desc: 'Customizable treatment for pigmentation, texture, and tone, matched to your skin.',
+      },
+      bodySculpt: {
+        title: 'Body Sculpt',
+        tagline: 'Refine your natural silhouette.',
+        desc: 'Nonsurgical treatment designed to reduce stubborn areas of fat.',
+      },
+      bodyTone: {
+        title: 'Body Tone',
+        tagline: 'Enhance muscle definition.',
+        desc: 'Technology-based treatment designed to condition muscle and improve body tone.',
+      },
+      rf: {
+        title: 'Viora radiofrequency (RF)',
+        tagline: 'Improve firmness and texture.',
+        desc: 'Controlled energy that supports collagen and improves the look of loose skin.',
+      },
+      hifu: {
+        title: 'High-intensity focused ultrasound (HIFU)',
+        tagline: 'Lift and firm without surgery.',
+        desc: 'Reaches deeper layers of skin to build collagen and gradually improve firmness.',
+      },
+      rfMicroneedling: {
+        title: 'RF microneedling',
+        tagline: 'Refine texture. Stimulate collagen.',
+        desc: 'Microneedling with radiofrequency to improve fine lines, acne scars, pores, and loose skin.',
+      },
+      prp: {
+        title: 'Platelet-rich plasma (PRP)',
+        tagline: 'Your body’s natural healing.',
+        desc: 'A concentrate of your own platelets, used with selected treatments to support skin repair.',
+      },
+      facials: {
+        title: 'Medical facials & peels',
+        tagline: 'Healthier-looking skin.',
+        desc: 'Peels and customized facials as part of your skin health plan.',
+      },
+      hair: {
+        title: 'Hair restoration',
+        tagline: 'Support for thinning hair.',
+        desc: 'Consultations for PRP and other hair restoration options.',
+      },
+      iv: {
+        title: 'IV hydration & NAD+',
+        tagline: 'Rehydrate and recharge.',
+        desc: 'Medical screening and personalized infusion services where appropriate.',
+      },
+      hormones: {
+        title: 'Hormone health',
+        tagline: 'Feel more like yourself.',
+        desc: 'Men’s and women’s hormone assessment and individualized management.',
+      },
+      weight: {
+        title: 'Medical weight loss',
+        tagline: 'A plan you can keep.',
+        desc: 'Metabolic evaluation, nutrition support, and prescription therapy when appropriate.',
+      },
     },
+    radianceLead: 'Your beauty goals evolve. Your aesthetic care should evolve with them.',
+    radianceDesc:
+      'A membership for ongoing aesthetic care: one team that knows your history, a long-term plan, and consistent member pricing instead of rotating promotions.',
+    radianceBenefits: {
+      savings: { title: 'Member savings', desc: 'Preferred pricing on eligible treatments all year.' },
+      planning: { title: 'Personalized plan', desc: 'Recommendations based on your skin, features, and goals.' },
+      physician: { title: 'Physician-supervised care', desc: 'Treatments delivered in a medical setting.' },
+      technology: { title: 'Advanced technology', desc: 'Lasers, RF, ultrasound, and more under one roof.' },
+      continuity: { title: 'Continuity of care', desc: 'A team that knows your goals and treatment history.' },
+      priority: { title: 'Priority scheduling', desc: 'Easier access to appointments and maintenance visits.' },
+    },
+    disclaimer:
+      'All treatments are subject to medical evaluation, eligibility, and availability. Individual results vary. Membership benefits, pricing, and included services are governed by the membership terms.',
     faqs: [
       {
         q: 'Do I need a consultation first?',
         a: 'Yes. Every treatment starts with a consultation, where we check that it suits you, explain your options, and give you a price.',
+      },
+      {
+        q: 'Will my results look natural?',
+        a: 'That’s our goal. We plan subtle, balanced changes that keep your expressions and features your own.',
+      },
+      {
+        q: 'Is there downtime?',
+        a: 'It depends on the treatment. Injectables and many skin treatments need little or none, while laser resurfacing can take several days to heal. We’ll tell you what to expect at your consultation.',
       },
       {
         q: 'Does insurance cover MedSpa treatments?',
@@ -784,9 +883,10 @@ export const pagesEs: typeof pagesEn = {
     medspaDesc: 'Tratamientos estéticos y de bienestar, planificados con usted en una consulta.',
     medspaGroups: {
       injectables: { title: 'Inyectables', desc: 'Botox, neuromoduladores y rellenos dérmicos' },
-      skin: { title: 'Rejuvenecimiento de la piel', desc: 'Microagujas, peelings, láser y radiofrecuencia' },
+      laser: { title: 'Rejuvenecimiento con láser', desc: 'Resurfacing con CO₂, YAG, BBL y láser Lutronic' },
+      body: { title: 'Reafirmación y contorno corporal', desc: 'Body Sculpt, Body Tone, radiofrecuencia y HIFU' },
+      renewal: { title: 'Microagujas y medicina regenerativa', desc: 'Microagujas con RF, PRP, peelings y restauración capilar' },
       wellness: { title: 'Bienestar y hormonas', desc: 'Hidratación IV, NAD+ y salud hormonal' },
-      hair: { title: 'Cabello y regeneración', desc: 'Consultas de PRP y restauración capilar' },
     },
     medspaCta: 'Reservar consulta de MedSpa',
     medspaNote: 'La disponibilidad, la idoneidad y el precio de cada tratamiento se confirman en su consulta.',
@@ -857,23 +957,121 @@ export const pagesEs: typeof pagesEn = {
   medspaPage: {
     metaTitle: 'MedSpa y bienestar | StarMed Clinic San Antonio',
     metaDesc:
-      'Inyectables, rejuvenecimiento de la piel, hidratación IV, salud hormonal y restauración capilar en San Antonio. Cada tratamiento empieza con una consulta.',
+      'Botox, rellenos, resurfacing con láser, contorno corporal, microagujas con RF, hidratación IV y salud hormonal en San Antonio. Cada tratamiento empieza con una consulta.',
+    heroDesc: 'Redescubra una versión más joven y radiante de usted — sin cirugía. Cada tratamiento se planifica con usted en una consulta.',
+    approachTitle: 'Resultados naturales, planificados para usted',
+    approachText:
+      'StarMED reúne experiencia médica y tecnología estética avanzada en una sola clínica. Su plan se basa en su piel, sus metas y su seguridad, con atención supervisada por un médico en cada paso.',
+    approachQuote: 'El objetivo no es cambiar cómo se ve. Es realzar lo que le hace naturalmente usted.',
     menuTitle: 'Menú de tratamientos',
     consultTitle: 'Empiece con una consulta',
     treatments: {
-      botox: { title: 'Botox y neuromoduladores', desc: 'Consultas y tratamientos personalizados para relajar arrugas.' },
-      fillers: { title: 'Rellenos dérmicos', desc: 'Equilibrio facial y restauración de volumen con cuidado.' },
-      skin: { title: 'Rejuvenecimiento de la piel', desc: 'Microagujas, peelings y planes personalizados para la salud de la piel.' },
-      laser: { title: 'Tratamientos con láser y radiofrecuencia', desc: 'Opciones tecnológicas de renovación y reafirmación, según disponibilidad.' },
-      iv: { title: 'Hidratación IV y NAD+', desc: 'Evaluación médica y servicios de infusión personalizados cuando corresponda.' },
-      hormones: { title: 'Salud hormonal', desc: 'Evaluación hormonal para hombres y mujeres, con manejo individualizado.' },
-      weight: { title: 'Pérdida de peso médica', desc: 'Evaluación metabólica, apoyo nutricional y medicamentos cuando corresponda.' },
-      hair: { title: 'Cabello y regeneración', desc: 'Consultas sobre PRP y opciones de restauración capilar.' },
+      botox: {
+        title: 'Botox® y neuromoduladores',
+        tagline: 'Suavice líneas finas. Refresque su expresión.',
+        desc: 'Suaviza las líneas de la frente, las patas de gallo y el entrecejo, manteniendo el movimiento natural.',
+      },
+      fillers: {
+        title: 'Rellenos dérmicos',
+        tagline: 'Restaure volumen. Realce la definición.',
+        desc: 'Restaura el volumen perdido y equilibra los contornos del rostro para un aspecto renovado y natural.',
+      },
+      co2: {
+        title: 'Resurfacing con láser CO₂',
+        tagline: 'Renueve la textura de su piel.',
+        desc: 'Mejora el aspecto de arrugas, cicatrices de acné y textura irregular al estimular la renovación de la piel.',
+      },
+      bbl: {
+        title: 'Láser YAG y luz BroadBand (BBL)',
+        tagline: 'Un cutis más claro y uniforme.',
+        desc: 'Trata el daño solar, la pigmentación y el tono desigual de la piel.',
+      },
+      lutronic: {
+        title: 'Láser Lutronic',
+        tagline: 'Renovación de la piel con precisión.',
+        desc: 'Tratamiento personalizable para pigmentación, textura y tono, adaptado a su piel.',
+      },
+      bodySculpt: {
+        title: 'Body Sculpt',
+        tagline: 'Refine su silueta natural.',
+        desc: 'Tratamiento sin cirugía diseñado para reducir zonas de grasa difíciles.',
+      },
+      bodyTone: {
+        title: 'Body Tone',
+        tagline: 'Realce la definición muscular.',
+        desc: 'Tratamiento con tecnología diseñado para acondicionar el músculo y mejorar el tono corporal.',
+      },
+      rf: {
+        title: 'Radiofrecuencia Viora (RF)',
+        tagline: 'Mejore la firmeza y la textura.',
+        desc: 'Energía controlada que favorece el colágeno y mejora el aspecto de la piel flácida.',
+      },
+      hifu: {
+        title: 'Ultrasonido focalizado de alta intensidad (HIFU)',
+        tagline: 'Levante y reafirme sin cirugía.',
+        desc: 'Llega a capas profundas de la piel para producir colágeno y mejorar la firmeza poco a poco.',
+      },
+      rfMicroneedling: {
+        title: 'Microagujas con radiofrecuencia',
+        tagline: 'Refine la textura. Estimule el colágeno.',
+        desc: 'Microagujas con radiofrecuencia para mejorar líneas finas, cicatrices de acné, poros y flacidez.',
+      },
+      prp: {
+        title: 'Plasma rico en plaquetas (PRP)',
+        tagline: 'La capacidad natural de su cuerpo para sanar.',
+        desc: 'Un concentrado de sus propias plaquetas, usado con tratamientos seleccionados para apoyar la reparación de la piel.',
+      },
+      facials: {
+        title: 'Faciales médicos y peelings',
+        tagline: 'Una piel de aspecto más sano.',
+        desc: 'Peelings y faciales personalizados como parte de su plan de cuidado de la piel.',
+      },
+      hair: {
+        title: 'Restauración capilar',
+        tagline: 'Apoyo para el cabello debilitado.',
+        desc: 'Consultas sobre PRP y otras opciones de restauración capilar.',
+      },
+      iv: {
+        title: 'Hidratación IV y NAD+',
+        tagline: 'Rehidrátese y recupere energía.',
+        desc: 'Evaluación médica y servicios de infusión personalizados cuando corresponda.',
+      },
+      hormones: {
+        title: 'Salud hormonal',
+        tagline: 'Vuelva a sentirse usted.',
+        desc: 'Evaluación hormonal para hombres y mujeres, con manejo individualizado.',
+      },
+      weight: {
+        title: 'Pérdida de peso médica',
+        tagline: 'Un plan que puede mantener.',
+        desc: 'Evaluación metabólica, apoyo nutricional y medicamentos cuando corresponda.',
+      },
     },
+    radianceLead: 'Sus metas de belleza cambian. Su cuidado estético debe cambiar con ellas.',
+    radianceDesc:
+      'Una membresía para el cuidado estético continuo: un equipo que conoce su historial, un plan a largo plazo y precios constantes para miembros en lugar de promociones pasajeras.',
+    radianceBenefits: {
+      savings: { title: 'Ahorros para miembros', desc: 'Precios preferenciales en tratamientos elegibles todo el año.' },
+      planning: { title: 'Plan personalizado', desc: 'Recomendaciones según su piel, sus rasgos y sus metas.' },
+      physician: { title: 'Atención supervisada por un médico', desc: 'Tratamientos realizados en un entorno médico.' },
+      technology: { title: 'Tecnología avanzada', desc: 'Láser, radiofrecuencia, ultrasonido y más en un solo lugar.' },
+      continuity: { title: 'Continuidad en su atención', desc: 'Un equipo que conoce sus metas y su historial de tratamientos.' },
+      priority: { title: 'Prioridad en citas', desc: 'Acceso más fácil a citas y visitas de mantenimiento.' },
+    },
+    disclaimer:
+      'Todos los tratamientos están sujetos a evaluación médica, elegibilidad y disponibilidad. Los resultados varían según la persona. Los beneficios, precios y servicios incluidos en la membresía se rigen por los términos de la membresía.',
     faqs: [
       {
         q: '¿Necesito una consulta primero?',
         a: 'Sí. Cada tratamiento empieza con una consulta, donde confirmamos que sea adecuado para usted, le explicamos sus opciones y le damos un precio.',
+      },
+      {
+        q: '¿Mis resultados se verán naturales?',
+        a: 'Ese es nuestro objetivo. Planificamos cambios sutiles y equilibrados que mantienen sus expresiones y rasgos.',
+      },
+      {
+        q: '¿Hay tiempo de recuperación?',
+        a: 'Depende del tratamiento. Los inyectables y muchos tratamientos de piel requieren poco o ninguno, mientras que el resurfacing con láser puede tardar varios días en sanar. Le diremos qué esperar en su consulta.',
       },
       {
         q: '¿El seguro cubre los tratamientos de MedSpa?',

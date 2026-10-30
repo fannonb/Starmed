@@ -14,7 +14,7 @@ export default function EmployerBand({ heading: Heading = 'h3' }: { heading?: 'h
   const t = pages.employerBand
 
   return (
-    <article className="grid overflow-hidden rounded-[1.5rem] bg-[#E4F2FC] text-[#222863] ring-1 ring-[#CFE6F7] lg:grid-cols-12">
+    <article className="grid overflow-hidden rounded-[1.5rem] bg-white text-[#222863] ring-1 ring-[#DCE3F0] lg:grid-cols-12">
       <div className="relative h-44 sm:h-56 lg:col-span-4 lg:h-auto lg:min-h-[16rem]">
         <Image
           src="/employer-care-team.jpg"
@@ -49,12 +49,12 @@ export default function EmployerBand({ heading: Heading = 'h3' }: { heading?: 'h
       </div>
 
       {/* What the business gets, so owners see the payoff before clicking */}
-      <ul className="flex flex-col justify-center gap-4 border-t border-[#CFE6F7] px-7 py-7 sm:px-8 lg:col-span-3 lg:border-l lg:border-t-0 lg:px-8 lg:py-10">
+      <ul className="flex flex-col justify-center gap-4 border-t border-[#E3E8F0] px-7 py-7 sm:px-8 lg:col-span-3 lg:border-l lg:border-t-0 lg:px-8 lg:py-10">
         {t.perks.map((perk) => (
           <li key={perk} className="flex items-start gap-3 text-base font-semibold text-[#222863]">
             <span
               aria-hidden="true"
-              className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-[#3BA3E8]"
+              className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#E4F2FC] text-[#3BA3E8]"
             >
               <Check className="h-3.5 w-3.5" strokeWidth={2.6} />
             </span>

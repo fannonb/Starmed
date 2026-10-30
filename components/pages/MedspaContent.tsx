@@ -13,7 +13,6 @@ import {
 import { HubFaq, HubHero } from '@/components/care/HubSections'
 import LocaleLink from '@/components/layout/LocaleLink'
 import { useTranslations } from '@/components/layout/LocaleProvider'
-import { clinic } from '@/data/clinic'
 import {
   medspaGroups,
   medspaTreatmentHrefs,
@@ -164,26 +163,6 @@ export default function MedspaContent() {
 
           <div className="mt-8 grid gap-5 lg:grid-cols-2 lg:gap-6">
             {medspaGroups.map((group, index) => groupPanel(group, index))}
-
-            {/* Fills the last cell of the grid, beside the final group */}
-            <article className="flex flex-col justify-center rounded-[1.5rem] bg-[#222863] p-7 text-white sm:p-8">
-              <h3 className="font-serif text-2xl font-medium tracking-tight sm:text-[1.75rem]">{t.consultTitle}</h3>
-              <p className="mt-2 text-base leading-relaxed text-white/80">{panel.medspaNote}</p>
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
-                <LocaleLink
-                  href="/appointments?visit=medspa"
-                  className="inline-flex h-12 items-center justify-center rounded-lg bg-white px-6 text-sm font-semibold text-[#222863] transition-colors hover:bg-[#EAF0FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                >
-                  {panel.medspaCta}
-                </LocaleLink>
-                <a
-                  href={clinic.phoneHref}
-                  className="text-center text-sm font-semibold text-white underline decoration-white/40 underline-offset-4 transition-colors hover:decoration-white"
-                >
-                  {pages.primaryCarePage.callCta.replace('{phone}', clinic.phoneDisplay)}
-                </a>
-              </div>
-            </article>
           </div>
         </div>
       </section>

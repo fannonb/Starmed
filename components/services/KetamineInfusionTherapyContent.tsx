@@ -60,9 +60,14 @@ export default function KetamineInfusionTherapyContent() {
               What it is
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-[#3D4452]">
-              Ketamine is a medicine given slowly through an IV, a small tube in your arm. In low,
-              carefully controlled doses, it can ease depression and pain, sometimes faster than
-              other treatments.
+              Ketamine therapy is a medical treatment that can help people who are struggling with
+              depression, anxiety, and certain chronic pain conditions, especially when traditional
+              treatments have not provided enough relief.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-[#3D4452]">
+              Ketamine has been used safely in medical settings for decades, primarily as an
+              anesthetic. More recently, research has shown that, at carefully controlled doses, it
+              can also help improve symptoms of depression and certain pain conditions.
             </p>
             <ul className="mt-6 list-none divide-y divide-[#DCE3F0] p-0">
               {facts.map((item) => (
@@ -93,7 +98,8 @@ export default function KetamineInfusionTherapyContent() {
             Who it may help
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#3D4452]">
-            Ketamine is usually for people who have tried other treatments without enough relief.
+            Our goal is to help reduce your symptoms, improve your daily functioning, and create an
+            opportunity for lasting improvement in your mental health and quality of life.
           </p>
 
           <div className="mt-10 grid items-start gap-6 lg:grid-cols-3">

@@ -3,7 +3,7 @@ export const clinic = {
   phoneDisplay: '(726) 242-3011',
   phoneHref: 'tel:7262423011',
   smsHref: 'sms:7262423011',
-  email: 'info@starmed.clinic',
+  email: 'info@starmedtx.com',
   locations: [
     {
       name: 'Suite 1206',

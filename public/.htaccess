@@ -1,0 +1,58 @@
+# StarMed website: Apache/cPanel rules for the static export (copied into out/ by `next build`).
+
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # --- Always HTTPS (also correct behind Cloudflare's proxy) ---
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteCond %{HTTP:CF-Visitor} !"scheme":"https"
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # --- www.starmedtx.com -> starmedtx.com ---
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # --- Short alias ---
+  RewriteRule ^(en|es)/faq/?$ /$1/frequently-asked-questions/ [L,R=301]
+
+  # --- Language: "/" and paths without /en or /es go to the visitor's language ---
+  # Saved choice (NEXT_LOCALE cookie) wins, then the browser language, then English.
+  RewriteRule ^ - [E=SM_LANG:en]
+  RewriteCond %{HTTP:Accept-Language} es [NC]
+  RewriteRule ^ - [E=SM_LANG:es]
+  RewriteCond %{HTTP_COOKIE} (?:^|;\s*)NEXT_LOCALE=(en|es)(?:;|$)
+  RewriteRule ^ - [E=SM_LANG:%1]
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(?!(?:en|es|_next|api)(?:/|$))(.*)$ /%{ENV:SM_LANG}/$1 [L,R=302]
+
+  # Mark build assets with hashed names for long caching (used below).
+  RewriteRule ^_next/static/ - [E=SM_IMMUTABLE:1]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+  # Pages: always check for a new version, so updates show up right after upload.
+  <FilesMatch "\.(html|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # Images and fonts: one week.
+  <FilesMatch "\.(png|jpe?g|webp|avif|gif|svg|ico|woff2?)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+  # Hashed build files never change: one year.
+  Header set Cache-Control "public, max-age=31536000, immutable" env=SM_IMMUTABLE
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml application/javascript application/json application/xml image/svg+xml
+</IfModule>

@@ -1,0 +1,5 @@
+# Only the two form endpoints are public; shared code (_*.php) is not.
+Options -Indexes
+<FilesMatch "^_">
+  Require all denied
+</FilesMatch>

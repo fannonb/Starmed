@@ -22,11 +22,12 @@ lib/                 # i18n helpers, utils
 messages/            # EN/ES copy catalogs
 public/              # Static assets (images, fonts, icons)
 scripts/             # One-off build utilities
-proxy.ts             # Next.js locale proxy (replaces middleware)
+public/.htaccess     # Apache: HTTPS, language redirects, 404, caching
+public/api/          # PHP form handlers (email via cPanel, Cloudflare Turnstile)
+deploy/              # cPanel deployment guide + server config template
 ```
 
 ## Scripts
 
 - `pnpm dev` — local development
-- `pnpm build` — production build
-- `pnpm start` — serve production build
+- `pnpm build` — static export to `out/` for cPanel (see [deploy/README.md](deploy/README.md))

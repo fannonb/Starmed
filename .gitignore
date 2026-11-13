@@ -47,3 +47,6 @@ __v0_jsx-dev-runtime.ts
 
 # Vendor source packs (not shipped; keep local only)
 vendor/
+
+# cPanel upload bundles
+/upload-parts/

@@ -50,7 +50,7 @@ export type AppointmentErrorCode =
   | 'too-far'
 
 export type AppointmentFormState = {
-  status: 'idle' | 'success' | 'invalid' | 'rate-limited' | 'unavailable'
+  status: 'idle' | 'success' | 'invalid' | 'challenge-failed' | 'rate-limited' | 'unavailable'
   /** Field → error code; the client turns codes into localized text. */
   errors?: Partial<Record<AppointmentField, AppointmentErrorCode>>
 }

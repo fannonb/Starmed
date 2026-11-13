@@ -1,13 +1,16 @@
 'use client'
 
 import { FormEvent, startTransition, useActionState, useEffect, useRef, useState } from 'react'
+import Turnstile from '@/components/forms/Turnstile'
 import { useTranslations } from '@/components/layout/LocaleProvider'
 import { clinic } from '@/data/clinic'
 import { contactLimits, inquiryIds, type ContactField, type ContactFormState, type InquiryId } from '@/data/contact'
 import { membershipPackageIds, type MembershipPackageId } from '@/data/membership'
-import { sendContactMessage } from '@/lib/actions/contact'
+import { postForm } from '@/lib/forms'
 
 const initialState: ContactFormState = { status: 'idle' }
+const sendContactMessage = (_prev: ContactFormState, data: FormData) =>
+  postForm<ContactFormState>('/api/contact.php', data)
 
 const inputClass =
   'mt-2 w-full rounded-lg border bg-white px-3 text-base text-[#1A1A1A] outline-none transition-shadow focus:border-[#3BA3E8] focus:ring-2 focus:ring-[#3BA3E8]/20'
@@ -44,7 +47,8 @@ export default function ContactForm() {
     // Submit manually so the form keeps what the visitor typed if the server asks for fixes.
     e.preventDefault()
     const data = new FormData(e.currentTarget)
-    data.set('startedAt', String(startedAt.current))
+    // Elapsed time, not a timestamp, so a wrong clock on the visitor's device can't flag them as a bot.
+    data.set('elapsedMs', String(Date.now() - startedAt.current))
     startTransition(() => formAction(data))
   }
 
@@ -102,6 +106,7 @@ export default function ContactForm() {
           className="rounded-lg border border-[#C62828]/40 bg-[#FDF3F3] px-4 py-3 text-base text-[#8E1C1C]"
         >
           {state.status === 'invalid' ? t.errors.checkFields : null}
+          {state.status === 'challenge-failed' ? t.errors['challenge-failed'] : null}
           {state.status === 'rate-limited' ? t.errors['rate-limited'] : null}
           {state.status === 'unavailable' ? (
             <>
@@ -200,6 +205,8 @@ export default function ContactForm() {
         />
         {fieldError('message')}
       </label>
+
+      <Turnstile resetSignal={state} />
 
       <button
         type="submit"

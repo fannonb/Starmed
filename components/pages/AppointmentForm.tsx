@@ -3,6 +3,7 @@
 import { FormEvent, startTransition, useActionState, useEffect, useRef, useState, type ReactNode } from 'react'
 import AppointmentDatePicker from '@/components/forms/AppointmentDatePicker'
 import AppointmentTimePicker from '@/components/forms/AppointmentTimePicker'
+import Turnstile from '@/components/forms/Turnstile'
 import { useTranslations } from '@/components/layout/LocaleProvider'
 import { clinic } from '@/data/clinic'
 import {
@@ -14,9 +15,11 @@ import {
   type AppointmentFormState,
   type VisitTypeId,
 } from '@/data/appointments'
-import { requestAppointment } from '@/lib/actions/appointment'
+import { postForm } from '@/lib/forms'
 
 const initialState: AppointmentFormState = { status: 'idle' }
+const requestAppointment = (_prev: AppointmentFormState, data: FormData) =>
+  postForm<AppointmentFormState>('/api/appointment.php', data)
 
 const inputBase =
   'mt-2 w-full rounded-lg border bg-white px-3 text-base text-[#1A1A1A] outline-none transition-shadow focus:border-[#3BA3E8] focus:ring-2 focus:ring-[#3BA3E8]/20'
@@ -62,7 +65,8 @@ export default function AppointmentForm() {
     // Submit manually so the form keeps what the visitor entered if the server asks for fixes.
     e.preventDefault()
     const data = new FormData(e.currentTarget)
-    data.set('startedAt', String(startedAt.current))
+    // Elapsed time, not a timestamp, so a wrong clock on the visitor's device can't flag them as a bot.
+    data.set('elapsedMs', String(Date.now() - startedAt.current))
     startTransition(() => formAction(data))
   }
 
@@ -156,6 +160,7 @@ export default function AppointmentForm() {
           className="rounded-lg border border-[#C62828]/40 bg-[#FDF3F3] px-4 py-3 text-base text-[#8E1C1C]"
         >
           {state.status === 'invalid' ? t.errors.checkFields : null}
+          {state.status === 'challenge-failed' ? t.errors['challenge-failed'] : null}
           {state.status === 'rate-limited' ? t.errors['rate-limited'] : null}
           {state.status === 'unavailable' ? (
             <>
@@ -283,6 +288,8 @@ export default function AppointmentForm() {
           {fieldError('notes')}
         </label>
       </Step>
+
+      <Turnstile resetSignal={state} />
 
       <button
         type="submit"

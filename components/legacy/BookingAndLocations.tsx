@@ -109,7 +109,7 @@ export default function BookingAndLocations() {
               </a>
 
               <a
-                href="mailto:info@starmed.clinic"
+                href="mailto:info@starmedtx.com"
                 className="p-4 rounded-2xl bg-white border border-[#EADBCE] hover:border-[#C87D75] transition-colors group flex items-center gap-3"
               >
                 <div className="w-9 h-9 rounded-xl bg-[#4E1B24] text-white flex items-center justify-center shrink-0">
@@ -117,7 +117,7 @@ export default function BookingAndLocations() {
                 </div>
                 <div>
                   <div className="text-[10px] text-[#8E7B7E] uppercase font-bold">Email Inquiries</div>
-                  <div className="text-xs font-bold text-[#4E1B24] group-hover:text-[#C87D75]">info@starmed.clinic</div>
+                  <div className="text-xs font-bold text-[#4E1B24] group-hover:text-[#C87D75]">info@starmedtx.com</div>
                 </div>
               </a>
             </div>

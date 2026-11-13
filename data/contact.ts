@@ -25,7 +25,7 @@ export const contactLimits = {
 export type ContactField = 'name' | 'email' | 'phone' | 'inquiry' | 'message'
 
 export type ContactFormState = {
-  status: 'idle' | 'success' | 'invalid' | 'rate-limited' | 'unavailable'
+  status: 'idle' | 'success' | 'invalid' | 'challenge-failed' | 'rate-limited' | 'unavailable'
   /** Field → error code; the client turns codes into localized text. */
   errors?: Partial<Record<ContactField, 'required' | 'invalid' | 'too-long'>>
 }

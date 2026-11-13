@@ -1,10 +1,12 @@
 import localFont from 'next/font/local'
 import { Google_Sans } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { cookies } from 'next/headers'
-import { defaultLocale, isLocale, LOCALE_COOKIE } from '@/lib/i18n'
 import './globals.css'
+
+/**
+ * Shared <html>/<body> shell, fonts, and site-wide metadata.
+ * Used by the root layout (app/[locale]/layout.tsx) and app/global-not-found.tsx.
+ */
 
 const googleSans = Google_Sans({
   subsets: ['latin'],
@@ -41,7 +43,8 @@ const mackinac = localFont({
   fallback: ['Georgia', 'Times New Roman', 'serif'],
 })
 
-export const metadata: Metadata = {
+export const siteMetadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://starmedtx.com'),
   title: 'StarMed Clinic | Human-Centered Healthcare & Concierge Medicine San Antonio',
   description:
     'Compassionate whole-person primary care, mental wellness, neurofeedback, and concierge medicine in San Antonio, Texas. Healthcare that actually has time for you.',
@@ -65,30 +68,19 @@ export const metadata: Metadata = {
   },
 }
 
-export const viewport: Viewport = {
+export const siteViewport: Viewport = {
   colorScheme: 'light',
   themeColor: '#222863',
 }
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  const cookieStore = await cookies()
-  const raw = cookieStore.get(LOCALE_COOKIE)?.value
-  const lang = raw && isLocale(raw) ? raw : defaultLocale
-
+export function SiteShell({ lang, children }: { lang: string; children: React.ReactNode }) {
   return (
     <html
       lang={lang}
       className={`${googleSans.variable} ${mackinac.variable}`}
       suppressHydrationWarning
     >
-      <body className="antialiased font-sans bg-[#FAF7F2] text-[#251719]">
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
-      </body>
+      <body className="antialiased font-sans bg-[#FAF7F2] text-[#251719]">{children}</body>
     </html>
   )
 }
